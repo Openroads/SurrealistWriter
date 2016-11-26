@@ -22,6 +22,7 @@
         </activity>
         <activity android:name=".MainMenu" />
         <activity android:name=".CreateAcc" />
+        <activity android:name=".Gameplay" />
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" />
