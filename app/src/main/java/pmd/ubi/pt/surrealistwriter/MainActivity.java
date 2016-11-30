@@ -1,8 +1,9 @@
 package pmd.ubi.pt.surrealistwriter;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -10,7 +11,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d("DEBUG","TEST");
 
     }
+
+    public void login(View view){
+        Intent loginIntent = new Intent(this, MainMenu.class);
+        startActivity(loginIntent);
+    }
+
+    public void createAcc(View view){
+        Intent loginIntent = new Intent(this, CreateAcc.class);
+        startActivity(loginIntent);
+    }
+
 }
