@@ -14,7 +14,7 @@ public class MainMenu extends AppCompatActivity {
     }
 
     public void offlineMode(View view){
-        Intent intent = new Intent(this, OfflineMode.class);
+        Intent intent = new Intent(this, GameSettings.class);
         startActivity(intent);
     }
     public void rankingOnClick(View view)
