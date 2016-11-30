@@ -28,6 +28,8 @@
         <activity android:name=".OfflineMode" />
         <activity android:name=".Ranking"
             android:label="Ranking"/>
+        <activity android:name=".GameSettings" />
+        <activity android:name=".GamePlay"></activity>
     </application>
 
 </manifest>
