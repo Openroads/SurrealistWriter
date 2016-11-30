@@ -25,7 +25,9 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" />
-        <activity android:name=".OfflineMode"></activity>
+        <activity android:name=".OfflineMode" />
+        <activity android:name=".GameSettings" />
+        <activity android:name=".GamePlay"></activity>
     </application>
 
 </manifest>
