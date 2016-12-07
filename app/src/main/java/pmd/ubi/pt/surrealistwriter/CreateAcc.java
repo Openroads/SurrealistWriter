@@ -44,7 +44,7 @@ public class CreateAcc extends AppCompatActivity
 
         Date data = new Date();
 
-        User newUser = new User(username, email, password, data);
+        User newUser = new User(1, username, email, password, data);
 
         Toast.makeText(this, newUser.toString(), Toast.LENGTH_LONG).show();
 
