@@ -69,6 +69,8 @@ public class UserRepository
         cursor.moveToFirst();
         User newUser = cursorToUser(cursor);
         cursor.close();
+
+        return newUser;
     }
 
     protected User cursorToUser(Cursor cursor)
