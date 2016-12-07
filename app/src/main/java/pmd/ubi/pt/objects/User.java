@@ -6,6 +6,7 @@ import android.widget.Toast;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
+import java.util.jar.Pack200;
 
 /**
  * Created by Piotr on 30-Nov-16.
@@ -13,6 +14,7 @@ import java.util.Date;
 
 public class User
 {
+    private long id;
     private String userName;
     private String email;
     private String hashedPassword;
@@ -24,8 +26,9 @@ public class User
 
     }
 
-    public User(String _userName, String _email, String _password, Date _creationData)
+    public User(long _id, String _userName, String _email, String _password, Date _creationData)
     {
+        this.id = _id;
         this.userName = _userName;
         this.email = _email;
         this.hashedPassword = hashPassword(_password, _creationData);
@@ -75,6 +78,10 @@ public class User
     }
 
     //Getters
+    public long getId()
+    {
+        return this.id;
+    }
     public String getUserName()
     {
         return this.userName;
@@ -91,6 +98,10 @@ public class User
     }
 
     //Setters
+    public void setId(long _id)
+    {
+        this.id = _id;
+    }
     public void setUserName(String _userName)
     {
         this.userName = _userName;
