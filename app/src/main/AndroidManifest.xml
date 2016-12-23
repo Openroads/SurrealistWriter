@@ -34,6 +34,9 @@
         <activity android:name=".GameSettings" />
         <activity android:name=".GamePlay" />
         <activity android:name=".PlayerName" />
+        <activity android:name=".OnlineMode" />
+        <activity android:name=".CreateRoom" />
+        <activity android:name=".CurrentRoom"></activity>
     </application>
 
 </manifest>
