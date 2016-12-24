@@ -12,12 +12,82 @@
 
 
     <TextView
+        android:text="Spice you're the first player. Insert two words to start the game!"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="53dp"
-        android:id="@+id/textView"
-        android:textSize="50sp"
+        android:layout_marginTop="32dp"
+        android:id="@+id/tvComment"
         android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:text="Turn 1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/tvTurn" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tvTurn"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:text="The quick..."
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="55dp"
+            android:id="@+id/tvLastWords"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="36sp"
+            android:layout_below="@+id/tvComment"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="42dp"
+            android:layout_below="@+id/tvLastWords"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/etWord1"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:hint="Insert Word" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/etWord2"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:hint="Insert Word" />
+        </LinearLayout>
+
+        <Button
+            android:text="End Turn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/btEndTurn"
+            android:onClick="onClickEndTurn"/>
+
+    </LinearLayout>
+
 </RelativeLayout>

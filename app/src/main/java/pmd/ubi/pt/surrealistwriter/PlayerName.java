@@ -1,6 +1,7 @@
 package pmd.ubi.pt.surrealistwriter;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -17,6 +18,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import java.util.Vector;
 
 import petrov.kristiyan.colorpicker.ColorPicker;
 
@@ -140,8 +143,25 @@ public class PlayerName extends AppCompatActivity {
 
             if(flag == false)
                 Log.d("Debug","Won't jump to next activity!");
-            else
+            else{
                 Log.d("Debug","Will jump to next activity!");
+
+                Vector<String>  players = new Vector<>();
+                Vector<Integer> colors  = new Vector<>();
+                for(int i=0; i<iNumPlayers; i++){
+                    players.insertElementAt(mEditTextPlayers[i].getText().toString(),i);
+                    Drawable btBackground = mColorButtons[i].getBackground();
+                    colors.insertElementAt(((ColorDrawable) btBackground).getColor(),i);
+                }
+
+                Intent intent = new Intent(this, GamePlay.class);
+                intent.putExtra("numPlayers",iNumPlayers);
+                intent.putExtra("numCharacters", iNumCharacters);
+                intent.putExtra("gameMode", iGameMode);
+                intent.putExtra("players",players);
+                intent.putExtra("colors",colors);
+                startActivity(intent);
+            }
 
     }
 }
