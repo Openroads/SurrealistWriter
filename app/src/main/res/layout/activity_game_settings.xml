@@ -21,26 +21,39 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
-    <Button
-        android:text="Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="39dp"
-        android:id="@+id/buttonPlayOfflineGame"
-        android:onClick="onClickPlay"
-        android:layout_below="@+id/ETNumWords"
-        android:layout_alignLeft="@+id/ETNumWords"
-        android:layout_alignStart="@+id/ETNumWords" />
-
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="number"
         android:ems="10"
         android:layout_marginTop="26dp"
-        android:id="@+id/ETNumWords"
-        android:hint="Number of Words"
+        android:id="@+id/ETNumCharacters"
+        android:hint="Number of Characters"
         android:layout_below="@+id/ETNumPlayers"
         android:layout_alignLeft="@+id/ETNumPlayers"
         android:layout_alignStart="@+id/ETNumPlayers" />
+
+    <Button
+        android:text="Play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonPlayOfflineGame"
+        android:onClick="onClickPlay"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/ETNumCharacters"
+        android:layout_alignStart="@+id/ETNumCharacters" />
+
+    <ToggleButton
+        android:text="ToggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ETNumCharacters"
+        android:layout_alignLeft="@+id/ETNumCharacters"
+        android:layout_alignStart="@+id/ETNumCharacters"
+        android:id="@+id/toggleButtonGameMode"
+        android:textOff="Random"
+        android:textOn="Round Robin"
+        android:checked="true" />
+
+
 </RelativeLayout>

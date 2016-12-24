@@ -12,6 +12,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:windowSoftInputMode="adjustResize"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -21,16 +22,19 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainMenu" />
-        <activity android:name=".CreateAcc"
-                  android:label="@string/title_registration_activity"/>
+        <activity
+            android:name=".CreateAcc"
+            android:label="@string/title_registration_activity" />
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" />
         <activity android:name=".OfflineMode" />
-        <activity android:name=".Ranking"
-            android:label="Ranking"/>
+        <activity
+            android:name=".Ranking"
+            android:label="Ranking" />
         <activity android:name=".GameSettings" />
-        <activity android:name=".GamePlay"></activity>
+        <activity android:name=".GamePlay" />
+        <activity android:name=".PlayerName" />
     </application>
 
 </manifest>
