@@ -1,5 +1,6 @@
 package pmd.ubi.pt.surrealistwriter;
 
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -29,16 +30,36 @@ public class CreateRoom extends AppCompatActivity {
         roomModeTogButt = (ToggleButton) findViewById(R.id.roomModeTG);
 
         String roomName = roomNameET.getText().toString();
-        int maxNumPlayers = Integer.parseInt(maxNumPlayersET.getText().toString());
-        int numCharacters = Integer.parseInt(numCharactersET.getText().toString());
+        String maxNumPlayers = maxNumPlayersET.getText().toString();
+        String numCharacters = numCharactersET.getText().toString();
+        String gameMode = roomModeTogButt.getText().toString();
+        //valid data to use
+        if(checkData(roomName,maxNumPlayers,numCharacters))
+        {
+
+            Toast.makeText(this, "przechodzi"+gameMode, Toast.LENGTH_SHORT).show();
+        }
 
 
 
     }
-    public boolean checkData(String name,int iNumPlayers, int iNumCharacters) {
+    public boolean checkData(String name,String NumPlayers, String NumCharacters) {
+        int iNumPlayers = 0;
+        int iNumCharacters = 0;
         if (name.isEmpty()) {
             Toast.makeText(this, "You must enter name of room!", Toast.LENGTH_SHORT).show();
             return false;
+        }else if(NumPlayers.isEmpty())
+        {
+            Toast.makeText(this, "You must enter number of players!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if(NumCharacters.isEmpty()){
+            Toast.makeText(this, "You must enter number of characters!", Toast.LENGTH_SHORT).show();
+            return false;
+        }else{
+            iNumPlayers = Integer.parseInt(NumPlayers);
+            iNumCharacters = Integer.parseInt(NumCharacters);
         }
         // Checking Number of Players
 
