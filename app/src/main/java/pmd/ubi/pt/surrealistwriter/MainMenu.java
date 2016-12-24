@@ -22,4 +22,9 @@ public class MainMenu extends AppCompatActivity {
         Intent intent = new Intent(this,Ranking.class);
         startActivity(intent);
     }
+
+    public void onlineModeOC(View view) {
+        Intent intent = new Intent(this,OnlineMode.class);
+        startActivity(intent);
+    }
 }
