@@ -1,22 +1,17 @@
 package pmd.ubi.pt.surrealistwriter;
 
-import android.app.ActionBar;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.InputType;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.Vector;
@@ -24,9 +19,10 @@ import java.util.Vector;
 import petrov.kristiyan.colorpicker.ColorPicker;
 
 
-public class PlayerName extends AppCompatActivity {
+public class OfflinePlayerName extends AppCompatActivity {
 
     int iNumPlayers;
+    int iNumRounds;
     int iNumCharacters;
     int iGameMode;
     int currentPos;
@@ -39,6 +35,7 @@ public class PlayerName extends AppCompatActivity {
         setContentView(R.layout.activity_player_name);
 
         iNumPlayers    = getIntent().getExtras().getInt("numPlayers");
+        iNumRounds     = getIntent().getExtras().getInt("numRounds");
         iNumCharacters = getIntent().getExtras().getInt("numCharacters");
         iGameMode      = getIntent().getExtras().getInt("gameMode");
 
@@ -74,7 +71,7 @@ public class PlayerName extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     final View tempView = view;
-                    ColorPicker colorPicker = new ColorPicker(PlayerName.this);
+                    ColorPicker colorPicker = new ColorPicker(OfflinePlayerName.this);
                     colorPicker.show();
                     Log.d("DEBUG","Prev color: "+mColorButtons[tempView.getId()].getBackground());
                     colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
@@ -91,7 +88,7 @@ public class PlayerName extends AppCompatActivity {
                                 }
                             }
                             if(flag == false){
-                                Toast.makeText(PlayerName.this, "Color already selected",
+                                Toast.makeText(OfflinePlayerName.this, "Color already selected",
                                         Toast.LENGTH_SHORT).show();
                                 return;
                             }
@@ -154,8 +151,9 @@ public class PlayerName extends AppCompatActivity {
                     colors.insertElementAt(((ColorDrawable) btBackground).getColor(),i);
                 }
 
-                Intent intent = new Intent(this, GamePlay.class);
+                Intent intent = new Intent(this, OfflineGamePlay.class);
                 intent.putExtra("numPlayers",iNumPlayers);
+                intent.putExtra("numRounds",iNumRounds);
                 intent.putExtra("numCharacters", iNumCharacters);
                 intent.putExtra("gameMode", iGameMode);
                 intent.putExtra("players",players);

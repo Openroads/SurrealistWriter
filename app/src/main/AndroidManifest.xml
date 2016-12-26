@@ -12,8 +12,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:windowSoftInputMode="adjustResize"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:windowSoftInputMode="adjustResize">
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,12 +32,13 @@
         <activity
             android:name=".Ranking"
             android:label="Ranking" />
-        <activity android:name=".GameSettings" />
-        <activity android:name=".GamePlay" />
-        <activity android:name=".PlayerName" />
+        <activity android:name=".OfflineGameSettings" />
+        <activity android:name=".OfflineGamePlay" />
+        <activity android:name=".OfflinePlayerName" />
         <activity android:name=".OnlineMode" />
         <activity android:name=".CreateRoom" />
-        <activity android:name=".CurrentRoom"></activity>
+        <activity android:name=".CurrentRoom" />
+        <activity android:name=".OfflineGameEnd"></activity>
     </application>
 
 </manifest>

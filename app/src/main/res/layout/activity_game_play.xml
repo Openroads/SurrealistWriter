@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="pmd.ubi.pt.surrealistwriter.GamePlay">
+    tools:context="pmd.ubi.pt.surrealistwriter.OfflineGamePlay">
 
 
     <TextView
@@ -27,13 +27,13 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:id="@+id/tvTurn" />
+        android:id="@+id/tvRound" />
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/tvTurn"
+        android:layout_below="@+id/tvRound"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
@@ -41,21 +41,23 @@
             android:text="The quick..."
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="55dp"
+            android:maxLines = "2"
+            android:scrollbars = "vertical"
+            android:layout_marginTop="35dp"
             android:id="@+id/tvLastWords"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textSize="36sp"
+            android:textSize="30sp"
             android:layout_below="@+id/tvComment"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:textAlignment="center" />
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="42dp"
             android:layout_below="@+id/tvLastWords"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true">
@@ -65,21 +67,21 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
                 android:ems="10"
-                android:id="@+id/etWord1"
+                android:id="@+id/etWord"
                 android:layout_weight="1"
-                android:textAlignment="center"
-                android:hint="Insert Word" />
+                android:hint="Insert Phrase"
+                android:textAlignment="center" />
 
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:ems="10"
-                android:id="@+id/etWord2"
-                android:layout_weight="1"
-                android:textAlignment="center"
-                android:hint="Insert Word" />
         </LinearLayout>
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvNumChars"
+            android:textSize="10sp"
+            android:textAlignment="textEnd"
+            tools:text="54/120" />
 
         <Button
             android:text="End Turn"
