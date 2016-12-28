@@ -79,6 +79,11 @@
                 android:onClick="registerClick"
                 android:textStyle="bold" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/error_regist_TW" />
+
         </LinearLayout>
     </ScrollView>
 
