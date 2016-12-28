@@ -7,7 +7,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -17,8 +20,8 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import cz.msebera.android.httpclient.Header;
-import pmd.ubi.pt.objects.User;
+import pmd.ubi.pt.Utilities.RegisterDataValidate;
+import pmd.ubi.pt.Utilities.Utility;
 
 public class CreateAcc extends AppCompatActivity
 {
@@ -28,7 +31,7 @@ public class CreateAcc extends AppCompatActivity
     private EditText mUserNameView;
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
-    private EditText mErrorView;
+    private TextView mErrorView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -40,7 +43,7 @@ public class CreateAcc extends AppCompatActivity
         mUserNameView = (EditText) findViewById(R.id.reg_username);
         mEmailView = (AutoCompleteTextView) findViewById(R.id.reg_email);
         mPasswordView = (EditText) findViewById(R.id.reg_password);
-        mErrorView = (EditText) findViewById(R.id.error_regist_TW);
+        mErrorView = (TextView) findViewById(R.id.error_regist_TW);
 
     }
 
@@ -50,41 +53,48 @@ public class CreateAcc extends AppCompatActivity
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
 
-        Date data = new Date();
+        Date date = new Date();
+        java.text.SimpleDateFormat sdf =
+                new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        /*User newUser = new User(1, username, email, password, data);
+        String currdatestr = sdf.format(date);
 
-        Toast.makeText(this, newUser.toString(), Toast.LENGTH_LONG).show();*/
+        if(RegisterDataValidate.validateDataWithToast(username,email,password,this)) {
         RequestParams params = new RequestParams();
-
-        params.put("name", username);
+        params.put("username", username);
         // Put Http parameter username with value of Email Edit View control
-        params.put("username", email);
+        params.put("email", email);
         // Put Http parameter password with value of Password Edit View control
-        params.put("password", password);
+        String hashpassword = Utility.hashPassword(password,date);
+        params.put("password", hashpassword);
+        // Put current date of creating account
+        params.put("register_date", currdatestr);
         // Invoke RESTful Web Service with Http parameters
         invokeWS(params);
+        }
 
 
     }
     public void invokeWS(RequestParams params){
         // Show Progress Dialog
-        prgDialog.show();
+        //prgDialog.show();
         // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get("http://127.0.1.1:8080/SurrealistWriterRESTful/register/doregister",params ,new AsyncHttpResponseHandler() {
+        client.get("http://10.0.3.2:8080/SurrealistWriterRESTful/register/doregister",params ,new AsyncHttpResponseHandler() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
                 // Hide Progress Dialog
-                prgDialog.hide();
+                // prgDialog.hide();
                 try {
                     // JSON Object
-                    JSONObject obj = new JSONObject(responseBody.toString());//?????????
+                    String str = new String(responseBody);
+                    JSONObject obj = new JSONObject(str);
                     // When the JSON response has status boolean value assigned with true
                     if(obj.getBoolean("status")){
-                        Toast.makeText(getApplicationContext(), "You are successfully logged in!", Toast.LENGTH_LONG).show();
-                        // Navigate to Home screen
-                        navigatetoHomeActivity();
+                        // Set Default Values for Edit View controls
+                        setDefaultValues();
+                        // Display successfully registered message using Toast
+                        Toast.makeText(getApplicationContext(), "You are successfully registered!", Toast.LENGTH_LONG).show();
                     }
                     // Else display error message
                     else{
@@ -92,17 +102,15 @@ public class CreateAcc extends AppCompatActivity
                         Toast.makeText(getApplicationContext(), obj.getString("error_msg"), Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
                     Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
-
                 }
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
                 // Hide Progress Dialog
-                prgDialog.hide();
+                //prgDialog.hide();
                 // When Http response code is '404'
                 if(statusCode == 404){
                     Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
@@ -116,6 +124,7 @@ public class CreateAcc extends AppCompatActivity
                     Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
                 }
             }
+
         });
     }
     public void navigatetoHomeActivity(){
@@ -123,11 +132,12 @@ public class CreateAcc extends AppCompatActivity
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(homeIntent);
     }
-    public void navigatetoRegisterActivity(View view){
+    //to login activity
+   /* public void navigatetoRegisterActivity(View view){
         Intent loginIntent = new Intent(getApplicationContext(),CreateAcc.class);
         loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(loginIntent);
-    }
+    }*/
     private void setDefaultValues(){
         mUserNameView.setText("");
         mEmailView.setText("");
