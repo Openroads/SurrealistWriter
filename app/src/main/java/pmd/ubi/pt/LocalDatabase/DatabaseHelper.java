@@ -131,7 +131,6 @@ public class DatabaseHelper extends SQLiteOpenHelper
     {
         sqLiteDatabase.execSQL(SQL_CREATE_USER_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_OFFLINE_USERS_TABLE);
-
         sqLiteDatabase.execSQL(SQL_CREATE_GAME_USER_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_GAME_SCORE_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_RANKING_TABLE);
@@ -148,8 +147,6 @@ public class DatabaseHelper extends SQLiteOpenHelper
         //Cleare data
         sqLiteDatabase.execSQL("DROP TABLE IF EXIST " + USERS_TABLE);
         sqLiteDatabase.execSQL("DROP TABLE IF EXIST " + OFFLINE_USERS_TABLE);
-
-
         sqLiteDatabase.execSQL("DROP TABLE IF EXIST " + GAME_USER_TABLE);
         sqLiteDatabase.execSQL("DROP TABLE IF EXIST " + GAME_SCORE_TABLE);
         sqLiteDatabase.execSQL("DROP TABLE IF EXIST " + RANKING_TABLE);

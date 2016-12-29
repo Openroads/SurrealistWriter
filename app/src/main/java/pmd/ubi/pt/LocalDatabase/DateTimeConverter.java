@@ -20,7 +20,7 @@ public class DateTimeConverter
             date = df.parse(dateString);
         }
         catch ( Exception ex ){
-            Log.v("Blad konwersji daty", ex.toString());
+            Log.v("Error of conversion", ex.toString());
         }
         return date;
     }
@@ -33,20 +33,7 @@ public class DateTimeConverter
             data = df.format(date);
         }
         catch ( Exception ex ){
-            Log.v("Blad konwersji daty", ex.toString());
-        }
-        return data;
-    }
-
-    public static String dateToStringFileFormat(Date date)
-    {
-        String data = "";
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        try{
-            data = df.format(date);
-        }
-        catch ( Exception ex ){
-            Log.v("Blad konwersji daty", ex.toString());
+            Log.v("Error of conversion", ex.toString());
         }
         return data;
     }

@@ -133,5 +133,6 @@ public class CreateAcc extends AppCompatActivity
 
     public void signInOC(View view) {
         navigateToLogActivity();
+
     }
 }
