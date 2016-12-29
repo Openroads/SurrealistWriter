@@ -30,9 +30,6 @@ public class CreateAcc extends AppCompatActivity
     private EditText mPasswordView;
     private TextView mErrorView;
 
-    //Repository
-    private OfflineUserRepository offlineUserRepository;
-    private GameRepository gameRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
