@@ -20,6 +20,7 @@ import org.json.JSONObject;
 import pmd.ubi.pt.Utilities.RegisterDataValidate;
 import pmd.ubi.pt.Utilities.Utility;
 
+
 public class CreateAcc extends AppCompatActivity
 {
 
@@ -28,6 +29,10 @@ public class CreateAcc extends AppCompatActivity
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private TextView mErrorView;
+
+    //Repository
+    private OfflineUserRepository offlineUserRepository;
+    private GameRepository gameRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -45,6 +50,9 @@ public class CreateAcc extends AppCompatActivity
 
     public void registerClick(View v)
     {
+        /********** Testowanie **********/
+
+
         String username = mUserNameView.getText().toString();
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
@@ -121,6 +129,7 @@ public class CreateAcc extends AppCompatActivity
         mEmailView.setText("");
         mPasswordView.setText("");
     }
+
 
     public void signInOC(View view) {
         navigateToLogActivity();

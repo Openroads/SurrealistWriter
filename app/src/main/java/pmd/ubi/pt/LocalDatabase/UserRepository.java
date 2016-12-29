@@ -7,7 +7,9 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import pmd.ubi.pt.objects.User;
 
@@ -19,6 +21,7 @@ import static android.content.ContentValues.TAG;
 
 public class UserRepository
 {
+    /*
     private SQLiteDatabase mDatabase;
     private DatabaseHelper mDbHelper;
     private Context mContext;
@@ -39,6 +42,7 @@ public class UserRepository
         {
             Log.e(TAG, "SQLException on openning database " + ex.getMessage());
             ex.printStackTrace();
+            close();
         }
     }
 
@@ -91,5 +95,53 @@ public class UserRepository
         return question;
     }
 
+    public List<User> getAllUsers()
+    {
+        List<User> userList = new ArrayList<User>();
 
+        Cursor cursor = mDatabase.query(DatabaseHelper.USERS_TABLE, mAllColumns, null, null, null, null, null);
+
+        if(cursor != null)
+        {
+            cursor.moveToFirst();
+            while(!cursor.isAfterLast())
+            {
+                User user = cursorToUser(cursor);
+                userList.add(user);
+                cursor.moveToNext();
+
+            }
+            cursor.close();
+        }
+
+        return userList;
+    }
+
+    public void update(User user)
+    {
+        Date currentDate = new Date();
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.USER_USERNAME, user.getUserName());
+        values.put(DatabaseHelper.USER_EMAIL, user.getEmail());
+        values.put(DatabaseHelper.USER_HASHED_PASSWORD, user.getHashedPassword());
+        values.put(DatabaseHelper.USER_CREATION_DATE, DateTimeConverter.dateToString(currentDate));
+
+        long updateId = mDatabase.update(DatabaseHelper.USERS_TABLE, values, DatabaseHelper.USERS_ID + " = " + user.getId(), null);
+    }
+
+    public User getUserById(long id)
+    {
+        Cursor cursor = mDatabase.query(DatabaseHelper.USERS_TABLE, mAllColumns, DatabaseHelper.USERS_ID + " = ?", new String[]{String.valueOf(id)}, null, null, null );
+
+        if(cursor != null)
+        {
+            cursor.moveToFirst();
+
+        }
+
+        User user = cursorToUser(cursor);
+        return user;
+    }
+
+*/
 }
