@@ -47,8 +47,6 @@ public class CreateAcc extends AppCompatActivity
 
     public void registerClick(View v)
     {
-        /********** Testowanie **********/
-
 
         String username = mUserNameView.getText().toString();
         String email = mEmailView.getText().toString();
