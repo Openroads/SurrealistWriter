@@ -84,7 +84,7 @@ public class UserRepository
             question.setEmail(cursor.getString(2));
             Date d;
             d = DateTimeConverter.stringToDate(cursor.getString(3));
-            question.setHashedPassword(cursor.getString(3), d);
+            //question.setHashedPassword(cursor.getString(3), d);
         }
 
 

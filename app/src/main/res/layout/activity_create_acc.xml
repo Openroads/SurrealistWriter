@@ -84,6 +84,14 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/error_regist_TW" />
 
+            <Button
+                android:text="@string/action_sign_in_short"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:id="@+id/gologin_button"
+                android:onClick="signInOC"/>
+
         </LinearLayout>
     </ScrollView>
 

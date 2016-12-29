@@ -27,7 +27,7 @@ public class RegisterDataValidate {
             }
 
         }else{
-            Toast.makeText(context, "You must enter data in all fields. ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Please fill the form, don't leave any field blank. ", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
