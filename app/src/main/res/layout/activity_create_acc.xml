@@ -79,18 +79,19 @@
                 android:onClick="registerClick"
                 android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/error_regist_TW" />
-
             <Button
                 android:text="@string/action_sign_in_short"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="15dp"
                 android:id="@+id/gologin_button"
                 android:onClick="signInOC"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:id="@+id/error_regist_TW" />
 
         </LinearLayout>
     </ScrollView>

@@ -35,16 +35,21 @@ import android.widget.Toast;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.SyncHttpClient;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 import pmd.ubi.pt.Utilities.EmailValidator;
+import pmd.ubi.pt.Utilities.Utility;
+import pmd.ubi.pt.objects.User;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -69,6 +74,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mProgressView;
     private View mLoginFormView;
     private TextView mErrorViewET;
+    private Button mRegisterButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,10 +100,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                setDefaultValues();
                 attemptLogin();
             }
         });
         mErrorViewET = (TextView) findViewById(R.id.login_errorTW);
+        mRegisterButton = (Button) findViewById(R.id.createAccLogIn_BT);
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
     }
@@ -282,6 +290,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailView.setAdapter(adapter);
     }
 
+    public void fromLogiInToCreateOC(View view) {
+        Intent toRegister = new Intent(this,CreateAcc.class);
+        startActivity(toRegister);
+
+    }
+
 
     private interface ProfileQuery {
         String[] PROJECTION = {
@@ -302,6 +316,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         private final String mEmail;
         private final String mPassword;
         private RequestParams parameters;
+        private String data[];
 
         UserLoginTask(String email, String password) {
             mEmail = email;
@@ -311,20 +326,32 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-            parameters.put("username", mEmail);
-
-            // Invoke RESTful Web Service with Http parameters
-            String[] data = invokeWS(parameters);
-            Log.i("SURWRITER",data[1]+" " + data[2] + " " + data[3]);
 
             boolean ifCorrectPass = false;
-            Log.v("SURWRITER","em: "+mEmail+"has:" +mPassword);
+            parameters.put("email", mEmail);
 
+            // Invoke RESTful Web Service returned data in array in order:
+            // userid,username , register_date,hash_password
+            data = invokeWS(parameters);
+           // Log.v("SURWRITER","em: "+mEmail+"has:" +mPassword);
+           // Log.i("SURWRITER","Date: " + data[2]);
+            if(Utility.isNotNull(data[0]) && Utility.isNotNull(data[1])
+                    && Utility.isNotNull(data[2])&&Utility.isNotNull(data[3])) {
+                Date register_date = null;
 
+                try {
+                    register_date = Utility.StringFromDBToDate(data[2]);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
 
-
+                String hash_password = Utility.hashPassword(mPassword, register_date);
+                String hash_pass_fromDB = data[3];
+                // compare hash form db with hash of user input password
+                if (hash_password.equals(hash_pass_fromDB)) {
+                    ifCorrectPass = true;
+                }
+            }
             return ifCorrectPass;
         }
 
@@ -336,11 +363,30 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             if (success) {
                 finish();
 
-                Intent homeIntent = new Intent(getApplicationContext(),MainActivity.class);
-                startActivity(homeIntent);
+                long uid = Long.parseLong(data[0]);
+                Date creationDate = null;
+                try {
+                    creationDate = Utility.StringFromDBToDate(data[3]);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                // TODO here user put correct data, go to next account activity
+                // Ready user object to use
+                User user = new User(uid,data[1],mEmail,data[2],creationDate);
+                //Intent homeIntent = new Intent(getApplicationContext(),MainActivity.class);
+                //startActivity(homeIntent);
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
+                if(data[4].equals("ACCEXIST"))
+                {
+                    mPasswordView.setError(getString(R.string.error_incorrect_password));
+                    mPasswordView.requestFocus();
+                }else{
+                    mRegisterButton.setVisibility(View.VISIBLE);
+                    mErrorViewET.setText(data[4]);
+                    mPasswordView.setError(getString(R.string.error_incorrect_password));
+                    mEmailView.setError(getString(R.string.error_incorrect_email));
+                    Toast.makeText(getApplicationContext(), data[4], Toast.LENGTH_SHORT).show();
+                }
             }
         }
 
@@ -349,10 +395,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = null;
             showProgress(false);
         }
-        public String[] invokeWS(RequestParams params){
-            final String[] data = new String[3];
 
-            AsyncHttpClient client = new AsyncHttpClient();
+        private String[] invokeWS(RequestParams params){
+            final String[] data = new String[5];
+
+            SyncHttpClient client = new SyncHttpClient();
             client.get("http://10.0.3.2:8080/SurrealistWriterRESTful/login/dologin",params ,new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -360,78 +407,43 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         String str = new String(responseBody);
                         JSONObject obj = new JSONObject(str);
                         if(obj.getBoolean("status")){
-                            data[0] = obj.getString("username");
-                            data[0] = obj.getString("register_date");
-                            data[1] = obj.getString("hash_pwd");
-                            Toast.makeText(getApplicationContext(), "You are successfully logged in!", Toast.LENGTH_LONG).show();
-                            }else{
-                            //TODO dodac error view jutro text view
-                            mErrorViewET.setText(obj.getString("error_msg"));
-                            Toast.makeText(getApplicationContext(), obj.getString("error_msg"), Toast.LENGTH_LONG).show();
-                            }
-                        } catch (JSONException e) {
-                        Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
-                        e.printStackTrace();
+                            data[0] = obj.getString("userid");
+                            data[1] = obj.getString("username");
+                            data[2] = obj.getString("register_date");
+                            data[3] = obj.getString("hash_pwd");
+                            data[4] = "ACCEXIST";
+                        }else{
+                            data[4] = obj.getString("error_msg");
                         }
+                    } catch (JSONException e) {
+                            data[4] =  "Error Occured [Server's JSON response might be invalid]!";
+                            e.printStackTrace();
+                    }
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                     // When Http response code is '404'
                     if(statusCode == 404){
-                        Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                        data[4] = "Requested resource not found";
                     }
                     // When Http response code is '500'
                     else if(statusCode == 500){
-                        Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                        data[4]  = "Something went wrong at server end";
                     }
                     // When Http response code other than 404, 500
                     else{
-                        Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                        data[4] = "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]";
                     }
                 }
-
             });
             return data;
         }
-        /*public void invokeWsForDate(RequestParams params){
-            AsyncHttpClient client = new AsyncHttpClient();
-            client.get("http://10.0.3.2:8080/SurrealistWriterRESTful/login/getreg_date",params ,new AsyncHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    try{
-                        String str = new String(responseBody);
-                        JSONObject obj = new JSONObject(str);
-                        if(obj.getBoolean("status")){
-                            Toast.makeText(getApplicationContext(), "You are successfully logged in!", Toast.LENGTH_LONG).show();
-                        }else{
-                            errorMsg.setText(obj.getString("error_msg"));
-                            Toast.makeText(getApplicationContext(), obj.getString("error_msg"), Toast.LENGTH_LONG).show();
-                        }
-                    } catch (JSONException e) {
-                        Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
-                        e.printStackTrace();
-                    }
-                }
-                @Override
-                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+    }
+    private void setDefaultValues(){
+        mErrorViewET.setText("");
+        mRegisterButton.setVisibility(View.INVISIBLE);
 
-                    // When Http response code is '404'
-                    if(statusCode == 404){
-                        Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
-                    }
-                    // When Http response code is '500'
-                    else if(statusCode == 500){
-                        Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
-                    }
-                    // When Http response code other than 404, 500
-                    else{
-                        Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
-                    }
-                }
-
-            });
-        }*/
     }
 }
 

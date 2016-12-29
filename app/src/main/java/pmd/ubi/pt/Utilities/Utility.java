@@ -4,6 +4,7 @@ import android.util.Log;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
 import java.util.Date;
 
 /**
@@ -14,6 +15,17 @@ public class Utility {
 
     public static boolean isNotNull(String txt){
         return txt!=null && txt.trim().length()>0 ? true: false;
+    }
+
+    public static Date StringFromDBToDate(String str_date) throws ParseException {
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        return sdf.parse(str_date);
+    }
+    public static String DateToDBString(Date date)
+    {
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return sdf.format(date);
     }
 
     //function to hash password

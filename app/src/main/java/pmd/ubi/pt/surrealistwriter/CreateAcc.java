@@ -9,9 +9,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.Date;
-
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -24,8 +22,7 @@ import pmd.ubi.pt.Utilities.Utility;
 
 public class CreateAcc extends AppCompatActivity
 {
-    // Progress Dialog Object
-    private ProgressDialog prgDialog;
+
     //UI references
     private EditText mUserNameView;
     private AutoCompleteTextView mEmailView;
@@ -52,11 +49,9 @@ public class CreateAcc extends AppCompatActivity
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
 
-        Date date = new Date();
-        java.text.SimpleDateFormat sdf =
-                new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        String currdatestr = sdf.format(date);
+        Date date = new Date();
+        String currdatestr = Utility.DateToDBString(date);
 
         if(RegisterDataValidate.validateDataWithToast(username,email,password,this)) {
         RequestParams params = new RequestParams();
@@ -76,7 +71,6 @@ public class CreateAcc extends AppCompatActivity
             @Override
             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
                 try {
-                    // JSON Object
                     String str = new String(responseBody);
                     JSONObject obj = new JSONObject(str);
                     // When the JSON response has status boolean value assigned with true
@@ -117,6 +111,7 @@ public class CreateAcc extends AppCompatActivity
     }
 
     public void navigateToLogActivity(){
+        finish();
         Intent loginIntent = new Intent(getApplicationContext(),LoginActivity.class);
         startActivity(loginIntent);
     }
