@@ -40,6 +40,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
@@ -67,6 +68,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private TextView mErrorViewET;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +97,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 attemptLogin();
             }
         });
-
+        mErrorViewET = (TextView) findViewById(R.id.login_errorTW);
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
     }
@@ -314,8 +316,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             parameters.put("username", mEmail);
 
             // Invoke RESTful Web Service with Http parameters
-            invokeWsForDate(parameters);
-
+            String[] data = invokeWS(parameters);
+            Log.i("SURWRITER",data[1]+" " + data[2] + " " + data[3]);
 
             boolean ifCorrectPass = false;
             Log.v("SURWRITER","em: "+mEmail+"has:" +mPassword);
@@ -348,22 +350,23 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
         }
         public String[] invokeWS(RequestParams params){
-            final String[] data = new String[2];
+            final String[] data = new String[3];
 
             AsyncHttpClient client = new AsyncHttpClient();
-            client.get("http://192.168.2.2:9999/useraccount/login/dologin",params ,new AsyncHttpResponseHandler() {
+            client.get("http://10.0.3.2:8080/SurrealistWriterRESTful/login/dologin",params ,new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     try{
                         String str = new String(responseBody);
                         JSONObject obj = new JSONObject(str);
                         if(obj.getBoolean("status")){
-                            data[0]=obj.getString("register_date");
-                            data[1]=obj.getString("hash_pwd");
+                            data[0] = obj.getString("username");
+                            data[0] = obj.getString("register_date");
+                            data[1] = obj.getString("hash_pwd");
                             Toast.makeText(getApplicationContext(), "You are successfully logged in!", Toast.LENGTH_LONG).show();
                             }else{
                             //TODO dodac error view jutro text view
-                            //errorMsg.setText(obj.getString("error_msg"));
+                            mErrorViewET.setText(obj.getString("error_msg"));
                             Toast.makeText(getApplicationContext(), obj.getString("error_msg"), Toast.LENGTH_LONG).show();
                             }
                         } catch (JSONException e) {
@@ -389,8 +392,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 }
 
             });
-            }
-        public void invokeWsForDate(RequestParams params){
+            return data;
+        }
+        /*public void invokeWsForDate(RequestParams params){
             AsyncHttpClient client = new AsyncHttpClient();
             client.get("http://10.0.3.2:8080/SurrealistWriterRESTful/login/getreg_date",params ,new AsyncHttpResponseHandler() {
                 @Override
@@ -427,7 +431,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 }
 
             });
-        }
+        }*/
     }
 }
 
