@@ -5,7 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-public class MainMenu extends AppCompatActivity {
+import pmd.ubi.pt.LocalDatabase.OfflineUserRepository;
+
+public class MainMenu extends AppCompatActivity
+{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +28,12 @@ public class MainMenu extends AppCompatActivity {
 
     public void onlineModeOC(View view) {
         Intent intent = new Intent(this,OnlineMode.class);
+        startActivity(intent);
+    }
+
+    public void settingsOnClick(View view)
+    {
+        Intent intent = new Intent(this, AllOfflineUsersActivity.class);
         startActivity(intent);
     }
 }

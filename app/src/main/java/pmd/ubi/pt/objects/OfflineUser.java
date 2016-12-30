@@ -54,6 +54,6 @@ public class OfflineUser
 
     public String toString()
     {
-        return "Username: " + userName + "\nStatus: " + userStatus;
+        return "Username: " + userName;
     }
 }
