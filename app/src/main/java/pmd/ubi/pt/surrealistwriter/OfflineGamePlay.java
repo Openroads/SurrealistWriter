@@ -128,18 +128,29 @@ public class OfflineGamePlay extends AppCompatActivity {
 
     }
 
+    public String getLastTwoWords(String s){
+        String[] parts = s.split(" ");
+        if(parts.length == 0)
+            return "";
+        else if(parts.length == 1)
+            return "" + parts[parts.length-1];
+
+        else
+            return "" + parts[parts.length - 2] + " " + parts[parts.length - 1];
+    }
+
     public void onClickEndTurn(View view){
 
         if(checkWordIsValid(etWord.getText().toString())) {
             if(turn == 0)
                 setColor(tvLastWords,
-                        etWord.getText().toString() + " ... ",
-                        etWord.getText().toString(),
+                        getLastTwoWords(etWord.getText().toString()) + "... ",
+                        getLastTwoWords(etWord.getText().toString()) + "... ",
                         alColors.get(currentPlayer));
             else
                 setColor(tvLastWords,
-                        etWord.getText().toString(),
-                        etWord.getText().toString(),
+                        getLastTwoWords(etWord.getText().toString()) + "... ",
+                        getLastTwoWords(etWord.getText().toString()) + "... ",
                         alColors.get(currentPlayer));
 
             // Updates the arrays that form the formatted data
