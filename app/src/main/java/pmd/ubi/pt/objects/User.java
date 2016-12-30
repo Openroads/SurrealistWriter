@@ -26,56 +26,16 @@ public class User
 
     }
 
-    public User(long _id, String _userName, String _email, String _password, Date _creationData)
+    public User(long _id, String _userName, String _email, String _hashedPassword, Date _creationData)
     {
         this.id = _id;
         this.userName = _userName;
         this.email = _email;
-        this.hashedPassword = hashPassword(_password, _creationData);
+        this.hashedPassword = _hashedPassword;
         this.creationDate = _creationData;
 
     }
 
-    //Utility finction
-    private String bytesToHexString(byte[] bytes)
-    {
-        StringBuffer sb = new StringBuffer();
-        for(int i = 0; i< bytes.length; i++)
-        {
-            String hex = Integer.toHexString(0xFF & bytes[i]);
-            if(hex.length() == 1)
-            {
-                sb.append('0');
-            }
-            sb.append(hex);
-
-        }
-
-        return sb.toString();
-    }
-
-    //Hashing Function
-    private String hashPassword(String _password, Date _date)
-    {
-
-        String hash = "";
-
-        String passwordDate = _password + _date;
-        try
-        {
-            final MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            digest.update(passwordDate.getBytes());
-
-            hash = bytesToHexString(digest.digest());
-
-        }
-        catch(NoSuchAlgorithmException ex)
-        {
-            Log.v("Error", ex.getMessage().toString());
-        }
-
-        return hash;
-    }
 
     //Getters
     public long getId()
@@ -112,9 +72,9 @@ public class User
         this.email = _email;
     }
 
-    public void setHashedPassword(String _password, Date _currentDate)
+    public void setHashedPassword(String _password)
     {
-        this.hashedPassword = hashPassword(_password, _currentDate);
+        this.hashedPassword = _password;
     }
 
     public String toString()

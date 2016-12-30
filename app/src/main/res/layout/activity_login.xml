@@ -72,6 +72,20 @@
                 android:text="@string/action_sign_in"
                 android:textStyle="bold" />
 
+            <Button
+                android:text="Create new account"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/createAccLogIn_BT"
+                android:visibility="invisible"
+                android:onClick="fromLogiInToCreateOC"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:id="@+id/login_errorTW" />
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

@@ -33,31 +33,6 @@
         android:id="@+id/num_players_ET"
         android:hint="Maximum players" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10"
-        android:layout_below="@+id/num_players_ET"
-        android:layout_alignLeft="@+id/num_players_ET"
-        android:layout_alignStart="@+id/num_players_ET"
-        android:layout_marginTop="22dp"
-        android:id="@+id/num_chars_ET"
-        android:hint="Number of characters" />
-
-    <ToggleButton
-        android:text="ToggleButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/num_chars_ET"
-        android:layout_alignLeft="@+id/num_chars_ET"
-        android:layout_alignStart="@+id/num_chars_ET"
-        android:layout_marginTop="36dp"
-        android:id="@+id/roomModeTG"
-        android:textOff="Public"
-        android:textOn="Private"
-        android:checked="false" />
-
     <Button
         android:text="Create room"
         android:layout_width="wrap_content"
@@ -67,5 +42,40 @@
         android:layout_marginBottom="59dp"
         android:id="@+id/create_roomBT"
         android:onClick="create_tableOnClick"/>
+
+    <ToggleButton
+        android:text="ToggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/roomModeTG"
+        android:textOff="Public"
+        android:textOn="Private"
+        android:checked="false"
+        android:layout_below="@+id/num_chars_ET"
+        android:layout_alignLeft="@+id/num_chars_ET"
+        android:layout_alignStart="@+id/num_chars_ET"
+        android:layout_marginTop="25dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/num_chars_ET"
+        android:hint="Number of characters"
+        android:layout_below="@+id/num_rounds_ET"
+        android:layout_alignLeft="@+id/num_rounds_ET"
+        android:layout_alignStart="@+id/num_rounds_ET" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/num_rounds_ET"
+        android:hint="Number of rounds"
+        android:layout_below="@+id/num_players_ET"
+        android:layout_alignLeft="@+id/num_players_ET"
+        android:layout_alignStart="@+id/num_players_ET" />
 
 </RelativeLayout>

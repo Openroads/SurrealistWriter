@@ -3,6 +3,7 @@ package pmd.ubi.pt.surrealistwriter;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -19,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,9 +30,26 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.SyncHttpClient;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+
+import cz.msebera.android.httpclient.Header;
+import pmd.ubi.pt.Utilities.EmailValidator;
+import pmd.ubi.pt.Utilities.Utility;
+import pmd.ubi.pt.objects.User;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -45,13 +64,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private static final int REQUEST_READ_CONTACTS = 0;
 
     /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
-    /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
@@ -61,6 +73,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private TextView mErrorViewET;
+    private Button mRegisterButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,10 +100,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                setDefaultValues();
                 attemptLogin();
             }
         });
-
+        mErrorViewET = (TextView) findViewById(R.id.login_errorTW);
+        mRegisterButton = (Button) findViewById(R.id.createAccLogIn_BT);
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
     }
@@ -160,7 +176,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        if (TextUtils.isEmpty(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
@@ -191,14 +207,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
+        return EmailValidator.validateEmail(email);
     }
 
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
-    }
 
     /**
      * Shows the progress UI and hides the login form.
@@ -279,6 +290,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailView.setAdapter(adapter);
     }
 
+    public void fromLogiInToCreateOC(View view) {
+        Intent toRegister = new Intent(this,CreateAcc.class);
+        startActivity(toRegister);
+
+    }
+
 
     private interface ProfileQuery {
         String[] PROJECTION = {
@@ -298,33 +315,44 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         private final String mEmail;
         private final String mPassword;
+        private RequestParams parameters;
+        private String data[];
 
         UserLoginTask(String email, String password) {
             mEmail = email;
             mPassword = password;
+            parameters = new RequestParams();
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
 
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
+            boolean ifCorrectPass = false;
+            parameters.put("email", mEmail);
 
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
+            // Invoke RESTful Web Service returned data in array in order:
+            // userid,username , register_date,hash_password
+            data = invokeWS(parameters);
+           // Log.v("SURWRITER","em: "+mEmail+"has:" +mPassword);
+           // Log.i("SURWRITER","Date: " + data[2]);
+            if(Utility.isNotNull(data[0]) && Utility.isNotNull(data[1])
+                    && Utility.isNotNull(data[2])&&Utility.isNotNull(data[3])) {
+                Date register_date = null;
+
+                try {
+                    register_date = Utility.StringFromDBToDate(data[2]);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                String hash_password = Utility.hashPassword(mPassword, register_date);
+                String hash_pass_fromDB = data[3];
+                // compare hash form db with hash of user input password
+                if (hash_password.equals(hash_pass_fromDB)) {
+                    ifCorrectPass = true;
                 }
             }
-
-            // TODO: register the new account here.
-            return true;
+            return ifCorrectPass;
         }
 
         @Override
@@ -334,9 +362,31 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             if (success) {
                 finish();
+
+                long uid = Long.parseLong(data[0]);
+                Date creationDate = null;
+                try {
+                    creationDate = Utility.StringFromDBToDate(data[3]);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                // TODO here user put correct data, go to next account activity
+                // Ready user object to use
+                User user = new User(uid,data[1],mEmail,data[2],creationDate);
+                //Intent homeIntent = new Intent(getApplicationContext(),MainActivity.class);
+                //startActivity(homeIntent);
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
+                if(data[4].equals("ACCEXIST"))
+                {
+                    mPasswordView.setError(getString(R.string.error_incorrect_password));
+                    mPasswordView.requestFocus();
+                }else{
+                    mRegisterButton.setVisibility(View.VISIBLE);
+                    mErrorViewET.setText(data[4]);
+                    mPasswordView.setError(getString(R.string.error_incorrect_password));
+                    mEmailView.setError(getString(R.string.error_incorrect_email));
+                    Toast.makeText(getApplicationContext(), data[4], Toast.LENGTH_SHORT).show();
+                }
             }
         }
 
@@ -345,6 +395,55 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = null;
             showProgress(false);
         }
+
+        private String[] invokeWS(RequestParams params){
+            final String[] data = new String[5];
+
+            SyncHttpClient client = new SyncHttpClient();
+            client.get("http://10.0.3.2:8080/SurrealistWriterRESTful/login/dologin",params ,new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    try{
+                        String str = new String(responseBody);
+                        JSONObject obj = new JSONObject(str);
+                        if(obj.getBoolean("status")){
+                            data[0] = obj.getString("userid");
+                            data[1] = obj.getString("username");
+                            data[2] = obj.getString("register_date");
+                            data[3] = obj.getString("hash_pwd");
+                            data[4] = "ACCEXIST";
+                        }else{
+                            data[4] = obj.getString("error_msg");
+                        }
+                    } catch (JSONException e) {
+                            data[4] =  "Error Occured [Server's JSON response might be invalid]!";
+                            e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    // When Http response code is '404'
+                    if(statusCode == 404){
+                        data[4] = "Requested resource not found";
+                    }
+                    // When Http response code is '500'
+                    else if(statusCode == 500){
+                        data[4]  = "Something went wrong at server end";
+                    }
+                    // When Http response code other than 404, 500
+                    else{
+                        data[4] = "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]";
+                    }
+                }
+            });
+            return data;
+        }
+    }
+    private void setDefaultValues(){
+        mErrorViewET.setText("");
+        mRegisterButton.setVisibility(View.INVISIBLE);
+
     }
 }
 
