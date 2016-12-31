@@ -22,7 +22,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainMenu" />
         <activity
             android:name=".CreateAcc"
             android:label="@string/title_registration_activity" />
@@ -40,7 +39,9 @@
         <activity android:name=".CreateRoom" />
         <activity android:name=".CurrentRoom" />
         <activity android:name=".OfflineGameEnd" />
-        <activity android:name=".AllOfflineUsersActivity"></activity>
+        <activity android:name=".AllOfflineUsersActivity" />
+        <activity android:name=".OnlineModMenuactivity" />
+        <activity android:name=".OfflineModeMenuActivity"></activity>
     </application>
 
 </manifest>

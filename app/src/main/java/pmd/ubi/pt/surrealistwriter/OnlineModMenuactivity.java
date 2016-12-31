@@ -4,22 +4,28 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
-import pmd.ubi.pt.LocalDatabase.OfflineUserRepository;
+import pmd.ubi.pt.objects.User;
 
-public class MainMenu extends AppCompatActivity
+public class OnlineModMenuactivity extends AppCompatActivity
 {
+    private User user;
+    TextView userView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_menu);
+        setContentView(R.layout.activity_online_mod_menu);
+
+        userView = (TextView)findViewById(R.id.userNameAndEmail);
+
+        Intent i = getIntent();
+        user = (User)i.getSerializableExtra("user");
+        userView.setText("Wellcome " + user.toString());
+
     }
 
-    public void offlineMode(View view){
-        Intent intent = new Intent(this, OfflineGameSettings.class);
-        startActivity(intent);
-    }
     public void rankingOnClick(View view)
     {
         Intent intent = new Intent(this,Ranking.class);

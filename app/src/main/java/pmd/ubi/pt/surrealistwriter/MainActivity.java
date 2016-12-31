@@ -15,14 +15,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void login(View view){
-        Intent loginIntent = new Intent(this, MainMenu.class);
-        startActivity(loginIntent);
+    public void onlineModOnClick(View view){
+        Intent onlineModeIntent = new Intent(this, CreateAcc.class);
+        startActivity(onlineModeIntent);
     }
 
-    public void createAcc(View view){
-        Intent loginIntent = new Intent(this, CreateAcc.class);
-        startActivity(loginIntent);
+    public void offlineModeOnClick(View view){
+        Intent offlineModeIntent = new Intent(this, OfflineModeMenuActivity.class);
+        startActivity(offlineModeIntent);
     }
 
 }

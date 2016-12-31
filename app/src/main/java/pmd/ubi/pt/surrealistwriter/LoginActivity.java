@@ -47,6 +47,7 @@ import java.util.Date;
 import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
+import pmd.ubi.pt.Utilities.ConstantVariables;
 import pmd.ubi.pt.Utilities.EmailValidator;
 import pmd.ubi.pt.Utilities.Utility;
 import pmd.ubi.pt.objects.User;
@@ -373,8 +374,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 // TODO here user put correct data, go to next account activity
                 // Ready user object to use
                 User user = new User(uid,data[1],mEmail,data[2],creationDate);
-                //Intent homeIntent = new Intent(getApplicationContext(),MainActivity.class);
-                //startActivity(homeIntent);
+                Intent onlineModeIntent = new Intent(LoginActivity.this,OnlineModMenuactivity.class);
+                onlineModeIntent.putExtra("user", user);
+                startActivity(onlineModeIntent);
             } else {
                 if(data[4].equals("ACCEXIST"))
                 {
@@ -400,7 +402,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             final String[] data = new String[5];
 
             SyncHttpClient client = new SyncHttpClient();
-            client.get("http://10.0.3.2:8080/SurrealistWriterRESTful/login/dologin",params ,new AsyncHttpResponseHandler() {
+            client.get(ConstantVariables.ServiceConnectionString + "/login/dologin",params ,new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     try{
