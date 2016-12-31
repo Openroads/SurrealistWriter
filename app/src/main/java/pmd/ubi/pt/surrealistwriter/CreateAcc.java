@@ -17,6 +17,7 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pmd.ubi.pt.Utilities.ConstantVariables;
 import pmd.ubi.pt.Utilities.RegisterDataValidate;
 import pmd.ubi.pt.Utilities.Utility;
 
@@ -70,7 +71,7 @@ public class CreateAcc extends AppCompatActivity
     }
     public void invokeWS(RequestParams params){
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get("http://10.0.3.2:8080/SurrealistWriterRESTful/register/doregister",params ,new AsyncHttpResponseHandler() {
+        client.get(ConstantVariables.ServiceConnectionString + "/register/doregister",params ,new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
                 try {

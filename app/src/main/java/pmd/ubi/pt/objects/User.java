@@ -3,6 +3,7 @@ package pmd.ubi.pt.objects;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
@@ -12,7 +13,7 @@ import java.util.jar.Pack200;
  * Created by Piotr on 30-Nov-16.
  */
 
-public class User
+public class User implements Serializable
 {
     private long id;
     private String userName;
@@ -79,6 +80,6 @@ public class User
 
     public String toString()
     {
-        return this.userName + "\n" + this.email + "\n" + this.hashedPassword + "\n" + creationDate;
+        return this.email;
     }
 }

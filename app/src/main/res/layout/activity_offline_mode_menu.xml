@@ -1,31 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main_menu"
+    android:id="@+id/activity_offline_mode_menu"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="100dp"
-    android:paddingTop="100dp"
+    android:paddingTop="50dp"
     android:paddingLeft="50dp"
     android:paddingRight="50dp"
-    tools:context="pmd.ubi.pt.surrealistwriter.MainMenu">
+    tools:context="pmd.ubi.pt.surrealistwriter.OfflineModeMenuActivity">
 
     <Button
-        android:text="Offline mode"
+        android:text="Offline game"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/offline_button"
-        android:onClick="offlineMode"
+        android:onClick="offlineModeOnClick"
         android:layout_marginBottom="20dp"/>
 
-    <Button
-        android:text="Online mode"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/online_button"
-        android:layout_marginBottom="20dp"
-        android:onClick="onlineModeOC"/>
 
     <Button
         android:text="Settings"
@@ -42,4 +35,5 @@
         android:id="@+id/ranking_button"
         android:layout_marginBottom="20dp"
         android:onClick="rankingOnClick"/>
+
 </LinearLayout>
