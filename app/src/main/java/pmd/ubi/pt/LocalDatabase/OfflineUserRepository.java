@@ -112,6 +112,18 @@ public class OfflineUserRepository
         return offlineUser;
     }
 
+    public OfflineUser getOfflineUserByString(String id)
+    {
+        Cursor cursor = mDatabase.query(DatabaseHelper.OFFLINE_USERS_TABLE, mAllColumns, DatabaseHelper.OFFLINE_USERS_USERNAME + " = ?", new String[]{id}, null, null, null );
+        if(cursor != null)
+        {
+            cursor.moveToFirst();
+        }
+
+        OfflineUser offlineUser = cursorToOfflineUser(cursor);
+        return offlineUser;
+    }
+
     public void changeStatus(OfflineUser offlineUser, int _status)
     {
         ContentValues values = new ContentValues();

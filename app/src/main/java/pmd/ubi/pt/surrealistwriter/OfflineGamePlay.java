@@ -48,6 +48,8 @@ public class OfflineGamePlay extends AppCompatActivity {
     int[] allStart;
     int[] allEnd;
     int[] allColors;
+    int[] playerScoreSum;
+    int[] playerColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,8 @@ public class OfflineGamePlay extends AppCompatActivity {
         allStart   = new int[iNumPlayers*iNumRounds];
         allEnd     = new int[iNumPlayers*iNumRounds];
         allColors  = new int[iNumPlayers*iNumRounds];
+        playerScoreSum = new int[iNumPlayers];
+        playerColor    = new int[iNumPlayers];
 
         tvComment   = (TextView) findViewById(R.id.tvComment);
         tvLastWords = (TextView) findViewById(R.id.tvLastWords);
@@ -162,6 +166,10 @@ public class OfflineGamePlay extends AppCompatActivity {
             Log.d("DEBUG","String size: "+etWord.getText().toString().length());
             allEnd[turn]     = etWord.getText().toString().length();
             Log.d("DEBUG","Color Int: "+alColors.get(currentPlayer));
+            //Get total characters and sum it to the respective player
+            playerScoreSum[currentPlayer] += allEnd[turn]-1;
+            //Get color for each player
+            playerColor[currentPlayer] = alColors.get(currentPlayer);
             allColors[turn]  = alColors.get(currentPlayer);
             currentSizeChars+=etWord.getText().toString().length();
 
@@ -232,6 +240,10 @@ public class OfflineGamePlay extends AppCompatActivity {
             intent.putExtra("allEnd",allEnd);
             intent.putExtra("allColors",allColors);
             intent.putExtra("numTurns",turn);
+            intent.putExtra("numRounds",iNumRounds);
+            intent.putExtra("playerColors",playerColor);
+            intent.putExtra("playerScore",playerScoreSum);
+            intent.putExtra("players",alPlayers);
             startActivity(intent);
         }
 
