@@ -1,5 +1,6 @@
 package pmd.ubi.pt.surrealistwriter;
 
+import android.content.Intent;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +8,15 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import pmd.ubi.pt.Utilities.ConstantVariables;
 
 public class CreateRoom extends AppCompatActivity {
 
@@ -39,8 +49,12 @@ public class CreateRoom extends AppCompatActivity {
         //valid data to use
         if(checkData(roomName,maxNumPlayers,numCharacters,numRounds))
         {
-
-            Toast.makeText(this, "przechodzi"+gameMode, Toast.LENGTH_SHORT).show();
+            RequestParams params = new RequestParams();
+            params.put("room_name", roomName);
+            params.put("max_num_players", maxNumPlayers);
+            params.put("num_characters", numCharacters);
+            params.put("num_rounds", numRounds);
+            invokeWS(params);
         }
 
 
@@ -104,5 +118,72 @@ public class CreateRoom extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    /* REST SERVER */
+    public void invokeWS(RequestParams params) {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(ConstantVariables.ServiceConnectionString + "/createroom/docreateroom", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+                try {
+                    String str = new String(responseBody);
+                    JSONObject obj = new JSONObject(str);
+                    // When the JSON response has status boolean value assigned with true
+                    if (obj.getBoolean("status")) {
+                        setDefaultValues();
+                        Toast.makeText(getApplicationContext(), "Room has been successfully created!", Toast.LENGTH_LONG).show();
+                        navigateToLogActivity();
+                    }
+                    // Else display error message
+                    else {
+                        Toast.makeText(getApplicationContext(), obj.getString("error_msg"), Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+
+                // When Http response code is '404'
+                if (statusCode == 404) {
+                    Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code is '500'
+                else if (statusCode == 500) {
+                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code other than 404, 500
+                else {
+                    Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                }
+            }
+
+        });
+
+    }
+
+    public void navigateToLogActivity(){
+        finish();
+        Intent currentRoomIntent = new Intent(getApplicationContext(),CurrentRoom.class);
+        startActivity(currentRoomIntent);
+    }
+
+    private void setDefaultValues()
+    {
+        roomNameET.setText("");
+        maxNumPlayersET.setText("");
+        numRoundsET.setText("");
+        numCharactersET.setText("");
+        roomModeTogButt.setText("");
+    }
+
+
+    public void signInOC(View view) {
+        navigateToLogActivity();
+
     }
 }
