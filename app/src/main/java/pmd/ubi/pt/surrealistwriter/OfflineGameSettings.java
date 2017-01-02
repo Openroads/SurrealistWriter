@@ -50,6 +50,7 @@ public class OfflineGameSettings extends AppCompatActivity {
         intent.putExtra("numCharacters", iNumCharacters);
         intent.putExtra("gameMode", iGameMode);
         startActivity(intent);
+        finish();
     }
 
     public int getGameMode(){

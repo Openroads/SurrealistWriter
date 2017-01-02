@@ -245,6 +245,7 @@ public class OfflineGamePlay extends AppCompatActivity {
             intent.putExtra("playerScore",playerScoreSum);
             intent.putExtra("players",alPlayers);
             startActivity(intent);
+            finish();
         }
 
 
