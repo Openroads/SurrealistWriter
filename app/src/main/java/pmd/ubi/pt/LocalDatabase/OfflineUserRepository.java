@@ -133,5 +133,15 @@ public class OfflineUserRepository
         long updateId = mDatabase.update(DatabaseHelper.OFFLINE_USERS_TABLE, values, DatabaseHelper.OFFLINE_USERS_ID + " = " + offlineUser.getUserId(), null);
     }
 
+    public boolean checkUsernameExists(String username){
+
+        Cursor cursor = mDatabase.query(DatabaseHelper.OFFLINE_USERS_TABLE, mAllColumns,
+                DatabaseHelper.OFFLINE_USERS_USERNAME + " = ?", new String[]{username}, null, null, null );
+
+        if(cursor.moveToFirst()==false)
+            return false;
+        return true;
+
+    }
 
 }

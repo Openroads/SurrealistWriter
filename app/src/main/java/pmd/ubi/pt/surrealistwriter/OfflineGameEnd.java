@@ -68,12 +68,15 @@ public class OfflineGameEnd extends AppCompatActivity {
 
         finalText.setText(strToSpan);
 
-        for(int i=0; i<numPlayers;i++){
-            offlineUserRepository.createOfflineUser(players.get(i),1);
-            rankingRepository.createRanking(
-                    offlineUserRepository.getOfflineUserByString(players.get(i)).getUserId(),
-                    playerScore[i]
-                    );
+        for(int i=0; i<numPlayers;i++) {
+            Log.d("DEBUG","I: "+i);
+            Log.d("DEBUG","Player: "+players.get(i));
+            //Log.d("DEBUG","User ID: "+offlineUserRepository.getOfflineUserByString(players.get(i)).getUserId());
+                rankingRepository.updateRanking(
+                        offlineUserRepository.getOfflineUserByString(players.get(i)).getUserId(),
+                        playerScore[i]
+                );
+
             strToSpan = new SpannableString(players.get(i)+": "+playerScore[i]);
             scoreTextViewArray[i] = new TextView(this);
             setFinalTextColorInterval(0,(players.get(i)+": "+playerScore[i]).length(),playerColor[i]);

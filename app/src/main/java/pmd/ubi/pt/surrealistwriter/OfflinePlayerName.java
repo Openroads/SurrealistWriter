@@ -17,6 +17,8 @@ import android.widget.Toast;
 import java.util.Vector;
 
 import petrov.kristiyan.colorpicker.ColorPicker;
+import pmd.ubi.pt.LocalDatabase.OfflineUserRepository;
+import pmd.ubi.pt.LocalDatabase.RankingRepository;
 
 
 public class OfflinePlayerName extends AppCompatActivity {
@@ -26,6 +28,10 @@ public class OfflinePlayerName extends AppCompatActivity {
     int iNumCharacters;
     int iGameMode;
     int currentPos;
+
+    private OfflineUserRepository offlineUserRepository;
+    private RankingRepository rankingRepository;
+
     private EditText[] mEditTextPlayers;
     private Button[] mColorButtons;
 
@@ -33,6 +39,9 @@ public class OfflinePlayerName extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player_name);
+
+        this.offlineUserRepository = new OfflineUserRepository(this);
+        this.rankingRepository     = new RankingRepository(this);
 
         iNumPlayers    = getIntent().getExtras().getInt("numPlayers");
         iNumRounds     = getIntent().getExtras().getInt("numRounds");
@@ -121,10 +130,13 @@ public class OfflinePlayerName extends AppCompatActivity {
                 }
                 if(mEditTextPlayers[i].getText().toString()
                         .equals(mEditTextPlayers[j].getText().toString())) {
-                    Toast.makeText(this, "Name already in use!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Name already chosen for this game!", Toast.LENGTH_SHORT).show();
                     Log.d("Debug",""+ i+" "+j);
                     flag = false;
                 }
+
+
+
             }
 
         for(int i=0;i<iNumPlayers;i++) {
@@ -149,6 +161,16 @@ public class OfflinePlayerName extends AppCompatActivity {
                     players.insertElementAt(mEditTextPlayers[i].getText().toString(),i);
                     Drawable btBackground = mColorButtons[i].getBackground();
                     colors.insertElementAt(((ColorDrawable) btBackground).getColor(),i);
+                }
+
+                for(int i=0;i<iNumPlayers;i++){
+                    if(offlineUserRepository.checkUsernameExists(mEditTextPlayers[i].getText().toString())==false){
+                        offlineUserRepository.createOfflineUser(players.get(i), 1);
+                        rankingRepository.createRanking(
+                                offlineUserRepository.getOfflineUserByString(players.get(i)).getUserId(),
+                                0
+                        );
+                    }
                 }
 
                 Intent intent = new Intent(this, OfflineGamePlay.class);
