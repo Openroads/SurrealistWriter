@@ -17,6 +17,8 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Console;
+
 import pmd.ubi.pt.Utilities.ConstantVariables;
 import pmd.ubi.pt.objects.CurrentRoomobject;
 import pmd.ubi.pt.objects.User;
@@ -171,10 +173,11 @@ public class CreateRoom extends AppCompatActivity
                     String str = new String(responseBody);
                     JSONObject obj = new JSONObject(str);
                     // When the JSON response has status boolean value assigned with true
-                    if (obj.getBoolean("status")) {
-                        //setDefaultValues();
+                    if (obj.getBoolean("status"))
+                    {
+                        String gameId = obj.getString("gameId");
                         Toast.makeText(getApplicationContext(), "Room has been successfully created!", Toast.LENGTH_LONG).show();
-                        navigateToCurrentRoomActivity();
+                        navigateToCurrentRoomActivity(gameId);
                     }
                     // Else display error message
                     else {
@@ -207,10 +210,13 @@ public class CreateRoom extends AppCompatActivity
 
     }
 
-    public void navigateToCurrentRoomActivity(){
+    public void navigateToCurrentRoomActivity(String gameId){
         finish();
-        CurrentRoomobject curr = new CurrentRoomobject(roomNameET.getText().toString(), Integer.parseInt(maxNumPlayersET.getText().toString()), Integer.parseInt(numRoundsET.getText().toString()), Integer.parseInt(numCharactersET.getText().toString()), 1, passwordET.getText().toString(), user.getId());
-        Intent currentRoomIntent = new Intent(getApplicationContext(),CurrentRoom.class);
+
+        CurrentRoomobject curr = new CurrentRoomobject(roomNameET.getText().toString(), Integer.parseInt(maxNumPlayersET.getText().toString()), Integer.parseInt(numRoundsET.getText().toString()), Integer.parseInt(numCharactersET.getText().toString()), 1, passwordET.getText().toString(), user.getId(), Integer.parseInt(gameId));
+        Intent currentRoomIntent = new Intent(getApplicationContext(),OnlineColorCheckActivity.class);
+        currentRoomIntent.putExtra("currentRoom", curr);
+        currentRoomIntent.putExtra("user", user);
         startActivity(currentRoomIntent);
     }
 
@@ -223,11 +229,6 @@ public class CreateRoom extends AppCompatActivity
         roomModeTogButt.setText("");
     }
 
-
-    public void signInOC(View view) {
-        navigateToCurrentRoomActivity();
-
-    }
 
     public void onToggleClicked(View view) {
         // Is the toggle on?
