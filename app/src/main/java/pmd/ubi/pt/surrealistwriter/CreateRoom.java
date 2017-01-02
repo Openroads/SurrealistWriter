@@ -164,7 +164,7 @@ public class CreateRoom extends AppCompatActivity
     /* REST SERVER */
     public void invokeWS(RequestParams params) {
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get(ConstantVariables.ServiceConnectionString + "/createroom/docreateroom", params, new AsyncHttpResponseHandler() {
+        client.get(ConstantVariables.ServiceConnectionString + "/room/docreateroom", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
                 try {
