@@ -1,10 +1,12 @@
 package pmd.ubi.pt.objects;
 
+import java.io.Serializable;
+
 /**
  * Created by Piotr on 01-Jan-17.
  */
 
-public class CurrentRoomobject
+public class CurrentRoomobject implements Serializable
 {
     private String name;
     private int maxNumbersOfPlayers;
@@ -13,8 +15,9 @@ public class CurrentRoomobject
     private int numberOfCurrentPlayers;
     private String hashedPassword;
     private long adminId;
+    private int gameID;
 
-    public CurrentRoomobject(String name, int maxNumbersOfPlayers, int numberOfRounds, int numberOfCharacters, int numberOfCurrentPlayers, String hashpassword, long adminId)
+    public CurrentRoomobject(String name, int maxNumbersOfPlayers, int numberOfRounds, int numberOfCharacters, int numberOfCurrentPlayers, String hashpassword, long adminId, int gameID)
     {
         this.name = name;
         this.maxNumbersOfPlayers = maxNumbersOfPlayers;
@@ -23,6 +26,15 @@ public class CurrentRoomobject
         this.numberOfCurrentPlayers = numberOfCurrentPlayers;
         this.hashedPassword = hashpassword;
         this.adminId = adminId;
+        this.gameID = gameID;
+    }
+
+    public int getGameID() {
+        return gameID;
+    }
+
+    public void setGameID(int gameID) {
+        this.gameID = gameID;
     }
 
     public long getAdminId() {

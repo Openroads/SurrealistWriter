@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -15,6 +16,8 @@ import com.loopj.android.http.RequestParams;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.Console;
 
 import pmd.ubi.pt.Utilities.ConstantVariables;
 import pmd.ubi.pt.objects.CurrentRoomobject;
@@ -42,6 +45,10 @@ public class CreateRoom extends AppCompatActivity
 
         passwordET = (EditText) findViewById(R.id.password_ET);
         roomModeTogButt = (ToggleButton) findViewById(R.id.roomModeTG);
+        roomNameET =        (EditText) findViewById(R.id.room_name_ET);
+        maxNumPlayersET =   (EditText) findViewById(R.id.num_players_ET);
+        numRoundsET =       (EditText) findViewById(R.id.num_rounds_ET);
+        numCharactersET =   (EditText) findViewById(R.id.num_chars_ET);
         Intent i = getIntent();
         user = (User)i.getSerializableExtra("user");
 
@@ -49,10 +56,7 @@ public class CreateRoom extends AppCompatActivity
     }
 
     public void create_tableOnClick(View view) {
-        roomNameET =        (EditText) findViewById(R.id.room_name_ET);
-        maxNumPlayersET =   (EditText) findViewById(R.id.num_players_ET);
-        numRoundsET =       (EditText) findViewById(R.id.num_rounds_ET);
-        numCharactersET =   (EditText) findViewById(R.id.num_chars_ET);
+
 
 
         String roomName = roomNameET.getText().toString();
@@ -162,7 +166,7 @@ public class CreateRoom extends AppCompatActivity
 
     /* REST SERVER */
     public void invokeWS(RequestParams params) {
-        AsyncHttpClient client = new AsyncHttpClient();
+        AsyncHttpClient client = new AsyncHttpClient(); //room instead createroom
         client.get(ConstantVariables.ServiceConnectionString + "/createroom/docreateroom", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
@@ -170,10 +174,11 @@ public class CreateRoom extends AppCompatActivity
                     String str = new String(responseBody);
                     JSONObject obj = new JSONObject(str);
                     // When the JSON response has status boolean value assigned with true
-                    if (obj.getBoolean("status")) {
-                        setDefaultValues();
+                    if (obj.getBoolean("status"))
+                    {
+                        String gameId = obj.getString("gameId");
                         Toast.makeText(getApplicationContext(), "Room has been successfully created!", Toast.LENGTH_LONG).show();
-                        navigateToCurrentRoomActivity();
+                        navigateToCurrentRoomActivity(gameId);
                     }
                     // Else display error message
                     else {
@@ -206,10 +211,13 @@ public class CreateRoom extends AppCompatActivity
 
     }
 
-    public void navigateToCurrentRoomActivity(){
+    public void navigateToCurrentRoomActivity(String gameId){
         finish();
-        CurrentRoomobject curr = new CurrentRoomobject(roomNameET.getText().toString(), Integer.parseInt(maxNumPlayersET.getText().toString()), Integer.parseInt(numRoundsET.getText().toString()), Integer.parseInt(numCharactersET.getText().toString()), 1, passwordET.getText().toString(), user.getId());
-        Intent currentRoomIntent = new Intent(getApplicationContext(),CurrentRoom.class);
+
+        CurrentRoomobject curr = new CurrentRoomobject(roomNameET.getText().toString(), Integer.parseInt(maxNumPlayersET.getText().toString()), Integer.parseInt(numRoundsET.getText().toString()), Integer.parseInt(numCharactersET.getText().toString()), 1, passwordET.getText().toString(), user.getId(), Integer.parseInt(gameId));
+        Intent currentRoomIntent = new Intent(getApplicationContext(),OnlineColorCheckActivity.class);
+        currentRoomIntent.putExtra("currentRoom", curr);
+        currentRoomIntent.putExtra("user", user);
         startActivity(currentRoomIntent);
     }
 
@@ -220,12 +228,6 @@ public class CreateRoom extends AppCompatActivity
         numRoundsET.setText("");
         numCharactersET.setText("");
         roomModeTogButt.setText("");
-    }
-
-
-    public void signInOC(View view) {
-        navigateToCurrentRoomActivity();
-
     }
 
     public void onToggleClicked(View view) {

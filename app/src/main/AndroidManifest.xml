@@ -41,7 +41,8 @@
         <activity android:name=".OfflineGameEnd" />
         <activity android:name=".AllOfflineUsersActivity" />
         <activity android:name=".OnlineModMenuactivity" />
-        <activity android:name=".OfflineModeMenuActivity"></activity>
+        <activity android:name=".OfflineModeMenuActivity" />
+        <activity android:name=".OnlineColorCheckActivity"></activity>
     </application>
 
 </manifest>
