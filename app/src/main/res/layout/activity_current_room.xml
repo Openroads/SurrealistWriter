@@ -10,4 +10,122 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="pmd.ubi.pt.surrealistwriter.CurrentRoom">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:textColor="#ff0000"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:text="Name of room"
+        android:id="@+id/roomNameTextView"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/roomNameTextView"
+        android:id="@+id/maxNumPlayersTextView"
+        android:text="Maximum number of players"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/maxNumPlayersTextView"
+        android:id="@+id/numOfRoundsTextView"
+        android:text="Number of rounds"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/numOfRoundsTextView"
+        android:id="@+id/numOfCharactersTextView"
+        android:text="Number of characters"/>
+
+    <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textSize="15dp"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="10dp"
+    android:layout_below="@+id/numOfCharactersTextView"
+    android:id="@+id/numOfCurrentPlayersTextView"
+    android:text="Number of current players"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/numOfCurrentPlayersTextView"
+        android:id="@+id/passwordTextView"
+        android:text="Password"/>
+
+    <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textSize="15dp"
+    android:layout_centerHorizontal="false"
+    android:layout_marginTop="10dp"
+    android:layout_below="@+id/passwordTextView"
+    android:id="@+id/usersTextView"
+    android:text="Players:"/>
+
+
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/usersTextView"
+        android:id="@+id/currentPlayersListView"
+        >
+
+    </ListView>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:paddingLeft="4.0dip"
+        android:paddingTop="5.0dip"
+        android:paddingRight="4.0dip"
+        android:paddingBottom="1.0dip"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/currentPlayersListView">
+
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:id="@+id/startGameButton"
+            android:layout_weight="1.0"
+            android:text="Start Game"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1.0"
+            android:layout_toRightOf="@+id/startGameButton"
+            android:id="@+id/closeRoomButton"
+            android:text="Close Room"/>
+
+
+    </LinearLayout>
+
+
+
+
 </RelativeLayout>

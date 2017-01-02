@@ -43,19 +43,6 @@
         android:id="@+id/create_roomBT"
         android:onClick="create_tableOnClick"/>
 
-    <ToggleButton
-        android:text="ToggleButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/roomModeTG"
-        android:textOff="Public"
-        android:textOn="Private"
-        android:checked="false"
-        android:layout_below="@+id/num_chars_ET"
-        android:layout_alignLeft="@+id/num_chars_ET"
-        android:layout_alignStart="@+id/num_chars_ET"
-        android:layout_marginTop="25dp" />
-
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -67,6 +54,7 @@
         android:layout_alignLeft="@+id/num_rounds_ET"
         android:layout_alignStart="@+id/num_rounds_ET" />
 
+
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -77,5 +65,31 @@
         android:layout_below="@+id/num_players_ET"
         android:layout_alignLeft="@+id/num_players_ET"
         android:layout_alignStart="@+id/num_players_ET" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/password_ET"
+        android:hint="Password"
+        android:layout_below="@+id/num_chars_ET"
+        android:layout_alignLeft="@+id/roomModeTG"
+        android:layout_alignStart="@+id/roomModeTG"
+        android:visibility="gone"/>
+
+    <ToggleButton
+        android:text="ToggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/roomModeTG"
+        android:textOff="Public"
+        android:textOn="Private"
+        android:checked="false"
+        android:layout_marginTop="45dp"
+        android:onClick="onToggleClicked"
+        android:layout_below="@+id/num_chars_ET"
+        android:layout_alignLeft="@+id/num_chars_ET"
+        android:layout_alignStart="@+id/num_chars_ET" />
 
 </RelativeLayout>

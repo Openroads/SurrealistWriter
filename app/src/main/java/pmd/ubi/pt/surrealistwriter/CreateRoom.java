@@ -17,21 +17,35 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import pmd.ubi.pt.Utilities.ConstantVariables;
+import pmd.ubi.pt.objects.CurrentRoomobject;
+import pmd.ubi.pt.objects.User;
 
-public class CreateRoom extends AppCompatActivity {
+public class CreateRoom extends AppCompatActivity
+{
 
     EditText roomNameET;
     EditText maxNumPlayersET;
     EditText numRoundsET;
     EditText numCharactersET;
+    EditText passwordET;
     ToggleButton roomModeTogButt;
+
+    private User user;
 
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_room);
+
+        passwordET = (EditText) findViewById(R.id.password_ET);
+        roomModeTogButt = (ToggleButton) findViewById(R.id.roomModeTG);
+        Intent i = getIntent();
+        user = (User)i.getSerializableExtra("user");
+
+
     }
 
     public void create_tableOnClick(View view) {
@@ -39,28 +53,31 @@ public class CreateRoom extends AppCompatActivity {
         maxNumPlayersET =   (EditText) findViewById(R.id.num_players_ET);
         numRoundsET =       (EditText) findViewById(R.id.num_rounds_ET);
         numCharactersET =   (EditText) findViewById(R.id.num_chars_ET);
-        roomModeTogButt = (ToggleButton) findViewById(R.id.roomModeTG);
+
 
         String roomName = roomNameET.getText().toString();
         String maxNumPlayers = maxNumPlayersET.getText().toString();
         String numRounds = numRoundsET.getText().toString();
         String numCharacters = numCharactersET.getText().toString();
-        String gameMode = roomModeTogButt.getText().toString();
+        String password = passwordET.getText().toString();
         //valid data to use
-        if(checkData(roomName,maxNumPlayers,numCharacters,numRounds))
+        if(checkData(roomName,maxNumPlayers,numCharacters,numRounds, password))
         {
             RequestParams params = new RequestParams();
             params.put("room_name", roomName);
             params.put("max_num_players", maxNumPlayers);
             params.put("num_characters", numCharacters);
             params.put("num_rounds", numRounds);
+            params.put("password", password);
+            params.put("user_id", user.getId());
+
             invokeWS(params);
         }
 
 
 
     }
-    public boolean checkData(String name,String NumPlayers, String NumCharacters,String NumRounds) {
+    public boolean checkData(String name,String NumPlayers, String NumCharacters,String NumRounds, String password) {
         int iNumPlayers = 0;
         int iNumCharacters = 0;
         int iNumRounds = 0;
@@ -117,6 +134,29 @@ public class CreateRoom extends AppCompatActivity {
             return false;
         }
 
+        //Checking Password
+
+        boolean on = roomModeTogButt.isChecked();
+
+        if(on)
+        {
+            if(password == null || password.isEmpty())
+            {
+                Toast.makeText(this, "Please enter a password!", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            else if(password.contains(" "))
+            {
+                Toast.makeText(this, "Password cannot contain white spaces!", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            else if(password.length() < 5 && !password.isEmpty())
+            {
+                Toast.makeText(this, "Password cannot be shorter than 5 characters", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
+
         return true;
     }
 
@@ -133,7 +173,7 @@ public class CreateRoom extends AppCompatActivity {
                     if (obj.getBoolean("status")) {
                         setDefaultValues();
                         Toast.makeText(getApplicationContext(), "Room has been successfully created!", Toast.LENGTH_LONG).show();
-                        navigateToLogActivity();
+                        navigateToCurrentRoomActivity();
                     }
                     // Else display error message
                     else {
@@ -166,8 +206,9 @@ public class CreateRoom extends AppCompatActivity {
 
     }
 
-    public void navigateToLogActivity(){
+    public void navigateToCurrentRoomActivity(){
         finish();
+        CurrentRoomobject curr = new CurrentRoomobject(roomNameET.getText().toString(), Integer.parseInt(maxNumPlayersET.getText().toString()), Integer.parseInt(numRoundsET.getText().toString()), Integer.parseInt(numCharactersET.getText().toString()), 1, passwordET.getText().toString(), user.getId());
         Intent currentRoomIntent = new Intent(getApplicationContext(),CurrentRoom.class);
         startActivity(currentRoomIntent);
     }
@@ -183,7 +224,20 @@ public class CreateRoom extends AppCompatActivity {
 
 
     public void signInOC(View view) {
-        navigateToLogActivity();
+        navigateToCurrentRoomActivity();
 
+    }
+
+    public void onToggleClicked(View view) {
+        // Is the toggle on?
+        boolean on = ((ToggleButton) view).isChecked();
+
+        if (on)
+        {
+            passwordET.setVisibility(View.VISIBLE);
+        } else {
+            passwordET.setText("");
+            passwordET.setVisibility(View.GONE);
+        }
     }
 }

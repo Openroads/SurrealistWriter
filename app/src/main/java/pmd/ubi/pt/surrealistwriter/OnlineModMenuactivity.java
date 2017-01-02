@@ -26,6 +26,11 @@ public class OnlineModMenuactivity extends AppCompatActivity
 
     }
 
+    public void offlineMode(View view)
+    {
+
+    }
+
     public void rankingOnClick(View view)
     {
         Intent intent = new Intent(this,Ranking.class);
@@ -34,6 +39,7 @@ public class OnlineModMenuactivity extends AppCompatActivity
 
     public void onlineModeOC(View view) {
         Intent intent = new Intent(this,OnlineMode.class);
+        intent.putExtra("user", user);
         startActivity(intent);
     }
 
