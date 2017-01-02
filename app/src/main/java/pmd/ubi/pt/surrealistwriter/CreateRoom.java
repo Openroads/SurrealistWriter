@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -39,9 +40,14 @@ public class CreateRoom extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_room);
-
-        passwordET = (EditText) findViewById(R.id.password_ET);
+        roomNameET        = (EditText) findViewById(R.id.room_name_ET);
+        maxNumPlayersET   = (EditText) findViewById(R.id.num_players_ET);
+        numRoundsET       = (EditText) findViewById(R.id.num_rounds_ET);
+        numCharactersET   = (EditText) findViewById(R.id.num_chars_ET);
+        passwordET        = (EditText) findViewById(R.id.password_ET);
         roomModeTogButt = (ToggleButton) findViewById(R.id.roomModeTG);
+
+
         Intent i = getIntent();
         user = (User)i.getSerializableExtra("user");
 
@@ -49,11 +55,6 @@ public class CreateRoom extends AppCompatActivity
     }
 
     public void create_tableOnClick(View view) {
-        roomNameET =        (EditText) findViewById(R.id.room_name_ET);
-        maxNumPlayersET =   (EditText) findViewById(R.id.num_players_ET);
-        numRoundsET =       (EditText) findViewById(R.id.num_rounds_ET);
-        numCharactersET =   (EditText) findViewById(R.id.num_chars_ET);
-
 
         String roomName = roomNameET.getText().toString();
         String maxNumPlayers = maxNumPlayersET.getText().toString();
@@ -171,7 +172,7 @@ public class CreateRoom extends AppCompatActivity
                     JSONObject obj = new JSONObject(str);
                     // When the JSON response has status boolean value assigned with true
                     if (obj.getBoolean("status")) {
-                        setDefaultValues();
+                        //setDefaultValues();
                         Toast.makeText(getApplicationContext(), "Room has been successfully created!", Toast.LENGTH_LONG).show();
                         navigateToCurrentRoomActivity();
                     }
