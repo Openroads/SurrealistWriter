@@ -1,16 +1,22 @@
 package pmd.ubi.pt.surrealistwriter;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
+import pmd.ubi.pt.LocalDatabase.DateTimeConverter;
 import pmd.ubi.pt.LocalDatabase.OfflineUserRepository;
 import pmd.ubi.pt.LocalDatabase.RankingRepository;
 
@@ -68,12 +74,15 @@ public class OfflineGameEnd extends AppCompatActivity {
 
         finalText.setText(strToSpan);
 
-        for(int i=0; i<numPlayers;i++){
-            offlineUserRepository.createOfflineUser(players.get(i),1);
-            rankingRepository.createRanking(
-                    offlineUserRepository.getOfflineUserByString(players.get(i)).getUserId(),
-                    playerScore[i]
-                    );
+        for(int i=0; i<numPlayers;i++) {
+            Log.d("DEBUG","I: "+i);
+            Log.d("DEBUG","Player: "+players.get(i));
+            //Log.d("DEBUG","User ID: "+offlineUserRepository.getOfflineUserByString(players.get(i)).getUserId());
+                rankingRepository.updateRanking(
+                        offlineUserRepository.getOfflineUserByString(players.get(i)).getUserId(),
+                        playerScore[i]
+                );
+
             strToSpan = new SpannableString(players.get(i)+": "+playerScore[i]);
             scoreTextViewArray[i] = new TextView(this);
             setFinalTextColorInterval(0,(players.get(i)+": "+playerScore[i]).length(),playerColor[i]);
@@ -127,5 +136,27 @@ public class OfflineGameEnd extends AppCompatActivity {
     private void setFinalTextColorInterval(int start, int stringSize, int color){
 
         strToSpan.setSpan(new ForegroundColorSpan(color), start, start+stringSize, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+    }
+
+    @Override
+    public void onBackPressed(){
+        Intent intent = new Intent(this, OfflineModeMenuActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    public void onClickEmailButton(View view){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        String currentDateandTime = DateTimeConverter.dateToString(new Date());
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("message/rfc822");
+        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{""});
+        i.putExtra(Intent.EXTRA_SUBJECT, "SurrealistWriter Results ["+currentDateandTime+"]" );
+        i.putExtra(Intent.EXTRA_TEXT   , finalText.getText().toString());
+        try {
+            startActivity(Intent.createChooser(i, "Send mail..."));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+        }
     }
 }

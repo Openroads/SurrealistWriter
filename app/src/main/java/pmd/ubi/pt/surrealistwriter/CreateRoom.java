@@ -42,13 +42,22 @@ public class CreateRoom extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_room);
-
-        passwordET = (EditText) findViewById(R.id.password_ET);
+        roomNameET        = (EditText) findViewById(R.id.room_name_ET);
+        maxNumPlayersET   = (EditText) findViewById(R.id.num_players_ET);
+        numRoundsET       = (EditText) findViewById(R.id.num_rounds_ET);
+        numCharactersET   = (EditText) findViewById(R.id.num_chars_ET);
+        passwordET        = (EditText) findViewById(R.id.password_ET);
         roomModeTogButt = (ToggleButton) findViewById(R.id.roomModeTG);
-        roomNameET =        (EditText) findViewById(R.id.room_name_ET);
-        maxNumPlayersET =   (EditText) findViewById(R.id.num_players_ET);
-        numRoundsET =       (EditText) findViewById(R.id.num_rounds_ET);
-        numCharactersET =   (EditText) findViewById(R.id.num_chars_ET);
+
+
+        Intent i = getIntent();
+        user = (User)i.getSerializableExtra("user");
+
+
+    }
+
+    public void create_tableOnClick(View view) {
+
         Intent i = getIntent();
         user = (User)i.getSerializableExtra("user");
 

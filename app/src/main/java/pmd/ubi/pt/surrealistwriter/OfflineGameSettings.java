@@ -33,6 +33,8 @@ public class OfflineGameSettings extends AppCompatActivity {
         if(checkEditText()==false)
             return;
 
+
+
         oNumPlayers    = (EditText) findViewById(R.id.ETNumPlayers);
         oNumCharacters = (EditText) findViewById(R.id.ETNumCharacters);
         oNumRounds     = (EditText) findViewById(R.id.ETNumRounds);
@@ -48,6 +50,7 @@ public class OfflineGameSettings extends AppCompatActivity {
         intent.putExtra("numCharacters", iNumCharacters);
         intent.putExtra("gameMode", iGameMode);
         startActivity(intent);
+        finish();
     }
 
     public int getGameMode(){

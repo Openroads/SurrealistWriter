@@ -69,6 +69,23 @@ public class RankingRepository
         return ranking;
     }
 
+    public void updateRanking(long _userId, int _score){
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.RANKING_USERID, _userId);
+
+
+        Cursor cRetrieveScore = mDatabase.query(DatabaseHelper.RANKING_TABLE, mAllColumns,
+                DatabaseHelper.RANKING_USERID + " = " + _userId, null, null, null, null);
+        cRetrieveScore.moveToFirst();
+        int dbScore = cRetrieveScore.getInt(2);
+        dbScore += _score;
+
+        values.put(DatabaseHelper.RANKING_SCORE, dbScore);
+        mDatabase.update(DatabaseHelper.RANKING_TABLE,values,"UserId="+_userId,null);
+
+
+    }
+
     private Ranking cursorToRanking(Cursor cursor)
     {
         Ranking ranking = new Ranking();
@@ -126,5 +143,7 @@ public class RankingRepository
         Ranking ranking = cursorToRanking(cursor);
         return ranking;
     }
+
+
 
 }
