@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_current_room"
     android:layout_width="match_parent"
@@ -89,6 +90,7 @@
         android:layout_marginTop="10dp"
         android:layout_below="@+id/usersTextView"
         android:id="@+id/currentPlayersListView"
+        android:textColor="#000000"
         >
 
     </ListView>
@@ -126,7 +128,20 @@
 
     </LinearLayout>
 
-
+    <ImageView
+        android:layout_width="30dp"
+        app:srcCompat="@mipmap/refresh_button"
+        android:id="@+id/imageButton"
+        android:onClick="onClickRefreshButton"
+        android:maxHeight="10dp"
+        android:maxWidth="10dp"
+        android:scaleType="centerCrop"
+        android:layout_height="30dp"
+        android:layout_below="@+id/passwordTextView"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginEnd="15dp" />
 
 
 </RelativeLayout>

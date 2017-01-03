@@ -1,6 +1,7 @@
 package pmd.ubi.pt.surrealistwriter;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -120,6 +121,8 @@ public class CurrentRoom extends AppCompatActivity
 
                         ArrayAdapter<User> offlineUserArrayAdapter = new ArrayAdapter<User>(getApplicationContext(), android.R.layout.simple_list_item_1, users);
                         userListView.setAdapter(offlineUserArrayAdapter);
+                        userListView.setBackgroundColor(Color.rgb(175,170,171));
+
 
 
                     }
@@ -154,9 +157,15 @@ public class CurrentRoom extends AppCompatActivity
 
     }
 
+    public void onClickRefreshButton(View view){
+        LoadActiveUsersToGage();
+    }
+
     private void LoadActiveUsersToGage()
     {
-
+        RequestParams params = new RequestParams();
+        params.put("game_id", gameId);
+        invokeWS(params);
     }
 
     public void closeRoomOnClick(View view)
