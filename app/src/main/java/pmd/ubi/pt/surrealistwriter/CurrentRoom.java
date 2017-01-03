@@ -36,6 +36,7 @@ public class CurrentRoom extends AppCompatActivity
 
     private CurrentRoomobject currentRoomobject;
     private int gameId;
+    private User user;
 
     private int numberOfCurrentPlayers; // Can be update by the Server
 
@@ -61,9 +62,15 @@ public class CurrentRoom extends AppCompatActivity
         password = (TextView)findViewById(R.id.passwordTextView);
         Intent i = getIntent();
         currentRoomobject = (CurrentRoomobject) i.getSerializableExtra("currentRoom");
-
+        user = (User)i.getSerializableExtra("user");
         numberOfCurrentPlayers = currentRoomobject.getNumberOfCurrentPlayers();
         GetInfoAboutRoom(currentRoomobject);
+
+
+
+
+
+
     }
 
     private void GetInfoAboutRoom(CurrentRoomobject currentRoomobject)
@@ -156,7 +163,9 @@ public class CurrentRoom extends AppCompatActivity
 
     private void LoadActiveUsersToGage()
     {
-
+        RequestParams params = new RequestParams();
+        params.put("game_id", gameId);
+        invokeWS(params);
     }
 
     public void closeRoomOnClick(View view)
@@ -165,13 +174,12 @@ public class CurrentRoom extends AppCompatActivity
         params.put("game_id", currentRoomobject.getGameID());
         params.put("status", 0);
         invokeWSK(params);
-        finish();
     }
 
     /* REST SERVER */
     public void invokeWSK(RequestParams params) {
         AsyncHttpClient client = new AsyncHttpClient(); //room instead createroom
-        client.get(ConstantVariables.ServiceConnectionString + "/changestatus/changegamestatus", params, new AsyncHttpResponseHandler() {
+        client.get(ConstantVariables.ServiceConnectionString + "/room/closeroom", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
                 try {
@@ -184,7 +192,9 @@ public class CurrentRoom extends AppCompatActivity
 
 
                         Toast.makeText(getApplication(), "Room has been desactivated!", Toast.LENGTH_SHORT).show();
-
+                        Intent i = new Intent(getApplicationContext(), OnlineModMenuactivity.class);
+                        i.putExtra("user", user);
+                        startActivity(i);
 
                     }
                     // Else display error message
