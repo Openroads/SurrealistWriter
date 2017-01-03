@@ -367,13 +367,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 int uid = Integer.parseInt(data[0]);
                 Date creationDate = null;
                 try {
-                    creationDate = Utility.StringFromDBToDate(data[3]);
+                    creationDate = Utility.StringFromDBToDate(data[2]);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
                 // TODO here user put correct data, go to next account activity
                 // Ready user object to use
-                User user = new User(uid,data[1],mEmail,data[2],creationDate);
+                User user = new User(uid,data[1],mEmail,data[3],creationDate);
                 Intent onlineModeIntent = new Intent(LoginActivity.this,OnlineModMenuactivity.class);
                 onlineModeIntent.putExtra("user", user);
                 startActivity(onlineModeIntent);

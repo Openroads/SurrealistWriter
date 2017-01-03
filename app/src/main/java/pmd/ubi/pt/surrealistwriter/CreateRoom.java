@@ -177,8 +177,6 @@ public class CreateRoom extends AppCompatActivity
                     // When the JSON response has status boolean value assigned with true
                     if (obj.getBoolean("status"))
                     {
-
-
                         String gameId = obj.getString("gameId");
                         Toast.makeText(getApplicationContext(), "Room has been successfully created!", Toast.LENGTH_LONG).show();
                         navigateToCurrentRoomActivity(gameId);

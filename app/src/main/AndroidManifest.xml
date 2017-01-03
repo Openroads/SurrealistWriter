@@ -43,6 +43,8 @@
         <activity android:name=".OnlineModMenuactivity" />
         <activity android:name=".OfflineModeMenuActivity" />
         <activity android:name=".OnlineColorCheckActivity"></activity>
+        <activity android:name=".OfflineModeMenuActivity" />
+        <activity android:name=".OnlineRoomPicker"></activity>
     </application>
 
 </manifest>
