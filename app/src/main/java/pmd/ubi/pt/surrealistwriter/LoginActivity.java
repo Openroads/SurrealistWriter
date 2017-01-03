@@ -364,7 +364,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             if (success) {
                 finish();
 
-                long uid = Long.parseLong(data[0]);
+                int uid = Integer.parseInt(data[0]);
                 Date creationDate = null;
                 try {
                     creationDate = Utility.StringFromDBToDate(data[3]);

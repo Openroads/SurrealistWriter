@@ -15,7 +15,7 @@ import java.util.jar.Pack200;
 
 public class User implements Serializable
 {
-    private long id;
+    private int id;
     private String userName;
     private String email;
     private String hashedPassword;
@@ -27,7 +27,7 @@ public class User implements Serializable
 
     }
 
-    public User(long _id, String _userName, String _email, String _hashedPassword, Date _creationData)
+    public User(int _id, String _userName, String _email, String _hashedPassword, Date _creationData)
     {
         this.id = _id;
         this.userName = _userName;
@@ -59,7 +59,7 @@ public class User implements Serializable
     }
 
     //Setters
-    public void setId(long _id)
+    public void setId(int _id)
     {
         this.id = _id;
     }

@@ -6,5 +6,5 @@ package pmd.ubi.pt.Utilities;
 
 public class ConstantVariables
 {
-    public static final String ServiceConnectionString = "http://10.0.2.2:8080/SurrealistWriterRESTful";
+    public static final String ServiceConnectionString = "http://10.0.3.2:8081/SurrealistWriterRESTful";
 }

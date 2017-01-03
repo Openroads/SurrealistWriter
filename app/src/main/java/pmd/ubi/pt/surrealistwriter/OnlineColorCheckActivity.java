@@ -31,8 +31,9 @@ public class OnlineColorCheckActivity extends AppCompatActivity
     private CurrentRoomobject currentRoomobject;
     private User user;
     private String color;
+    private int colorPicked;
     private LinearLayout linearLayout;
-    private boolean isColorAvailable = true;
+    private boolean isColorAvailable = false;
     private int checkedColor = 0;
     private boolean isAdmin = false;
     TextView userMail;
@@ -79,27 +80,25 @@ public class OnlineColorCheckActivity extends AppCompatActivity
                 colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
                     @Override
                     public void onChooseColor(int position, int color) {
-                        boolean flag = true;
+                        //boolean flag = true;
                         int btColor;
                         Drawable btBackground;
                         btBackground = mButton.getBackground();
                         btColor = ((ColorDrawable) btBackground).getColor();
-
                         //Checking if somebody has already choosen the same color
                         RequestParams params = new RequestParams();
+                        params.put("game_id", currentRoomobject.getGameID());
                         params.put("color", color);
+
                         invokeWS(params);
-                        flag = isColorAvailable;
 
-
-                        if (flag == false) {
-                            Toast.makeText(OnlineColorCheckActivity.this, "Color already selected",
-                                    Toast.LENGTH_SHORT).show();
-                            return;
-                        }
+                        //tutaj dodaje
                         checkedColor = color;
                         mButton.setBackgroundColor(color);
                         mButton.setHint("Color Set");
+                        //linearLayout.removeView(mButton);
+                        //linearLayout.addView(mButton);
+
                     }
 
                     @Override
@@ -110,14 +109,14 @@ public class OnlineColorCheckActivity extends AppCompatActivity
             }
 
         });
-
         linearLayout.addView(mButton);
+
     }
 
     /* REST SERVER */
     public void invokeWS(RequestParams params) {
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get(ConstantVariables.ServiceConnectionString + "/checkcolor/docheckcolor", params, new AsyncHttpResponseHandler() {
+        client.get(ConstantVariables.ServiceConnectionString + "/color/checkcolor", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
                 try {
@@ -127,19 +126,30 @@ public class OnlineColorCheckActivity extends AppCompatActivity
                     if (obj.getBoolean("status"))
                     {
                         //Get Responde from Server if color is available
-                        isColorAvailable = obj.getBoolean("isawailable");
+                        isColorAvailable = true;
                         if(isColorAvailable)
                         {
                             Toast.makeText(getApplicationContext(), "Color is available!", Toast.LENGTH_SHORT).show();
                         }
 
 
+
+                        if (isColorAvailable == false) {
+                            Toast.makeText(OnlineColorCheckActivity.this, "Color already selected",
+                                    Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        //Tutaj zmienilem
+
+
                     }
                     // Else display error message
                     else {
+                        isColorAvailable = false;
                         Toast.makeText(getApplicationContext(), obj.getString("error_msg"), Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
+                    isColorAvailable = false;
                     Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
                 }
@@ -148,6 +158,7 @@ public class OnlineColorCheckActivity extends AppCompatActivity
             @Override
             public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
 
+                isColorAvailable = false;
                 // When Http response code is '404'
                 if (statusCode == 404) {
                     Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();

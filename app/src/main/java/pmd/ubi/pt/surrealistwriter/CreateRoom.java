@@ -58,14 +58,6 @@ public class CreateRoom extends AppCompatActivity
 
     public void create_tableOnClick(View view) {
 
-        Intent i = getIntent();
-        user = (User)i.getSerializableExtra("user");
-
-
-    }
-
-    public void create_tableOnClick(View view) {
-
 
 
         String roomName = roomNameET.getText().toString();
@@ -176,7 +168,7 @@ public class CreateRoom extends AppCompatActivity
     /* REST SERVER */
     public void invokeWS(RequestParams params) {
         AsyncHttpClient client = new AsyncHttpClient(); //room instead createroom
-        client.get(ConstantVariables.ServiceConnectionString + "/createroom/docreateroom", params, new AsyncHttpResponseHandler() {
+        client.get(ConstantVariables.ServiceConnectionString + "/room/docreateroom", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
                 try {
@@ -185,6 +177,8 @@ public class CreateRoom extends AppCompatActivity
                     // When the JSON response has status boolean value assigned with true
                     if (obj.getBoolean("status"))
                     {
+
+
                         String gameId = obj.getString("gameId");
                         Toast.makeText(getApplicationContext(), "Room has been successfully created!", Toast.LENGTH_LONG).show();
                         navigateToCurrentRoomActivity(gameId);
