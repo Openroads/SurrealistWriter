@@ -13,20 +13,10 @@ public class DatabaseHelper extends SQLiteOpenHelper
 {
     public static final String TAG = "DBHelper";
 
-    public static final String DATABASE_NAME = "MyDatabase.sqllite";
+    public static final String DATABASE_NAME = "MyDatabase.sqlite";
     public static final int DATABASE_VERSION = 1;
 
     /******************** Tables ********************/
-
-
-    //UserTable
-    public static final String USERS_TABLE = "Users";
-    public static final String USERS_ID = "Id";
-    public static final String USER_USERNAME = "Username";
-    public static final String USER_EMAIL = "Email";
-    public static final String USER_HASHED_PASSWORD = "HashedPassword";
-    public static final String USER_CREATION_DATE = "CreationDate";
-
 
     //OfflineUserTable
     public static final String OFFLINE_USERS_TABLE = "OfflineUsers";
@@ -66,16 +56,6 @@ public class DatabaseHelper extends SQLiteOpenHelper
 
 
     /******************** End of Tables ********************/
-
-
-    public static final String SQL_CREATE_USER_TABLE = "CREATE TABLE " + USERS_TABLE + "("
-            + USERS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + USER_USERNAME + " VARCHAR(50) NOT NULL, "
-            + USER_EMAIL + " VARCHAR(50) NOT NULL, "
-            + USER_HASHED_PASSWORD + " VARCHAR(100) NOT NULL, "
-            + USER_CREATION_DATE + " VARCHAR(50) NOT NULL "
-            + " );";
-
 
 
     public static final String SQL_CREATE_OFFLINE_USERS_TABLE = "CREATE TABLE " + OFFLINE_USERS_TABLE + "("
@@ -129,14 +109,11 @@ public class DatabaseHelper extends SQLiteOpenHelper
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase)
     {
-        sqLiteDatabase.execSQL(SQL_CREATE_USER_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_OFFLINE_USERS_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_GAME_USER_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_GAME_SCORE_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_RANKING_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_GAME_TABLE);
-
-
     }
 
     @Override
@@ -145,7 +122,6 @@ public class DatabaseHelper extends SQLiteOpenHelper
         Log.w(TAG, "Upgrading database from version " + i + " to " + i1);
 
         //Cleare data
-        sqLiteDatabase.execSQL("DROP TABLE IF EXIST " + USERS_TABLE);
         sqLiteDatabase.execSQL("DROP TABLE IF EXIST " + OFFLINE_USERS_TABLE);
         sqLiteDatabase.execSQL("DROP TABLE IF EXIST " + GAME_USER_TABLE);
         sqLiteDatabase.execSQL("DROP TABLE IF EXIST " + GAME_SCORE_TABLE);
