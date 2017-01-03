@@ -120,7 +120,8 @@
             android:layout_weight="1.0"
             android:layout_toRightOf="@+id/startGameButton"
             android:id="@+id/closeRoomButton"
-            android:text="Close Room"/>
+            android:text="Close Room"
+            android:onClick="closeRoomOnClick"/>
 
 
     </LinearLayout>

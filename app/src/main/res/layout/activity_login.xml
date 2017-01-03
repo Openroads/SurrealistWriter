@@ -77,7 +77,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/createAccLogIn_BT"
-                android:visibility="invisible"
+                android:visibility="visible"
                 android:onClick="fromLogiInToCreateOC"/>
 
             <TextView

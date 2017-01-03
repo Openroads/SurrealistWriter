@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onlineModOnClick(View view){
-        Intent onlineModeIntent = new Intent(this, CreateAcc.class);
+        Intent onlineModeIntent = new Intent(this, LoginActivity.class);
         startActivity(onlineModeIntent);
     }
 
