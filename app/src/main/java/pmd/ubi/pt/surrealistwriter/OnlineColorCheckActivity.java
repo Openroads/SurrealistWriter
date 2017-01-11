@@ -53,7 +53,7 @@ public class OnlineColorCheckActivity extends AppCompatActivity
         currentRoomobject = (CurrentRoomobject) i.getSerializableExtra("currentRoom");
 
         user = (User) i.getSerializableExtra("user");
-        gameId = (Integer)(i.getSerializableExtra("game_id"));
+        gameId = Integer.parseInt(i.getSerializableExtra("game_id").toString());
         userMail = (TextView)findViewById(R.id.userMail);
         userMail.setText(user.getEmail());
         linearLayout = (LinearLayout)findViewById(R.id.linearButton);
@@ -147,18 +147,8 @@ public class OnlineColorCheckActivity extends AppCompatActivity
                     {
                         //Get Responde from Server if color is available
                         isColorAvailable = true;
-                        if(isColorAvailable)
-                        {
-                            Toast.makeText(getApplicationContext(), "Color is available!", Toast.LENGTH_SHORT).show();
-                        }
 
-
-
-                        if (isColorAvailable == false) {
-                            Toast.makeText(OnlineColorCheckActivity.this, "Color already selected",
-                                    Toast.LENGTH_SHORT).show();
-                            return;
-                        }
+                        Toast.makeText(getApplicationContext(), "Color is available!", Toast.LENGTH_SHORT).show();
                         //Tutaj zmienilem
 
 
@@ -166,6 +156,7 @@ public class OnlineColorCheckActivity extends AppCompatActivity
                     // Else display error message
                     else {
                         isColorAvailable = false;
+                        Toast.makeText(getApplicationContext(), "Color is  not available!", Toast.LENGTH_SHORT).show();
                         Toast.makeText(getApplicationContext(), obj.getString("error_msg"), Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
@@ -270,12 +261,62 @@ public class OnlineColorCheckActivity extends AppCompatActivity
             params.put("color", color);
 
             invokeWSK(params);
+            //Waiting for flag
             goToNextActivity();
         }
         else
         {
             Toast.makeText(getApplicationContext(), "Change your color to another!", Toast.LENGTH_SHORT).show();
         }
+
+    }
+
+    public void invokeWSCheckAdmin(RequestParams params) {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(ConstantVariables.ServiceConnectionString + "/game/gamestatus", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+                try {
+                    String str = new String(responseBody);
+                    JSONObject obj = new JSONObject(str);
+                    // When the JSON response has status boolean value assigned with true
+                    if (obj.getBoolean("status"))
+                    {
+                        Intent i = new Intent(getApplicationContext(),OnlineGameActivity.class);
+                        startActivity(i);
+
+
+                    }
+                    // Else display error message
+                    else {
+                        Toast.makeText(getApplicationContext(), "Game has yet to start!", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    isColorAvailable = false;
+                    Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+
+                isColorAvailable = false;
+                // When Http response code is '404'
+                if (statusCode == 404) {
+                    Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code is '500'
+                else if (statusCode == 500) {
+                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code other than 404, 500
+                else {
+                    Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                }
+            }
+
+        });
 
     }
 
@@ -290,9 +331,11 @@ public class OnlineColorCheckActivity extends AppCompatActivity
         }
         else
         {
+
             //finish();
+
             /*********** Here put the code to move to the activity when you join the room **********************/
-            Toast.makeText(getApplicationContext(), "You're not admin!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Waiting for Admin to join", Toast.LENGTH_LONG).show();
         }
     }
 }

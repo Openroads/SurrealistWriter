@@ -69,9 +69,9 @@ public class OnlineRoomPicker extends AppCompatActivity {
             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
                 try {
                     String str = new String(responseBody);
-                    JSONObject obj = new JSONObject(str);
-                    JSONObject objInfo  = obj.getJSONObject("Info");
-                    JSONArray  objArray = obj.getJSONArray("RoomsArray");
+                    final JSONObject obj = new JSONObject(str);
+                    final JSONArray  objArray = obj.getJSONArray("RoomsArray");
+                    final JSONObject objInfo  = obj.getJSONObject("Info");
 
                     Log.d("DEBUG","BEFORE IF");
                     // When the JSON response has status boolean value assigned with true
@@ -146,12 +146,24 @@ public class OnlineRoomPicker extends AppCompatActivity {
                                 public void onClick(View view) {
                                     Toast.makeText(getApplicationContext(), "Room "+
                                             tvRoomName[view.getId()].getText().toString(),Toast.LENGTH_SHORT).show();
-
+                                    int rid = -5;
                                     //Go to choose the color
+                                    for (int i = 0; i < numberOfRooms; i++) {
+                                        Log.d("Debug", "Inside status");
+                                        try {
+                                            if(objArray.getJSONObject(i).getString("room_name").equals( tvRoomName[view.getId()].getText().toString()))
+                                                rid = objArray.getJSONObject(i).getInt("game_id");
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+
+
+                                        Log.d("DEBUG", "" + ""+rid);
+                                    }
                                     finish();
                                     Intent i = new Intent(getApplicationContext(), OnlineColorCheckActivity.class);
                                     i.putExtra("user", user);
-                                    i.putExtra("game_id", view.getId());
+                                    i.putExtra("game_id", String.valueOf(rid));
                                     i.putExtra("roomName", tvRoomName[view.getId()].getText().toString());
                                     startActivity(i);
 
