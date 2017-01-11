@@ -39,6 +39,7 @@ public class OnlineColorCheckActivity extends AppCompatActivity
     TextView userMail;
     TextView roomName;
     private Integer gameId;
+    private int game_id;
     private String roomNameS;
 
 
@@ -53,7 +54,7 @@ public class OnlineColorCheckActivity extends AppCompatActivity
         currentRoomobject = (CurrentRoomobject) i.getSerializableExtra("currentRoom");
 
         user = (User) i.getSerializableExtra("user");
-        gameId = Integer.parseInt(i.getSerializableExtra("game_id").toString());
+        gameId = (Integer) (i.getSerializableExtra("game_id"));
         userMail = (TextView)findViewById(R.id.userMail);
         userMail.setText(user.getEmail());
         linearLayout = (LinearLayout)findViewById(R.id.linearButton);
@@ -250,6 +251,7 @@ public class OnlineColorCheckActivity extends AppCompatActivity
             else
             {
                 game_Id = String.valueOf(gameId);
+                game_id = gameId;
                 userId = String.valueOf(user.getId());
             }
 
@@ -320,10 +322,57 @@ public class OnlineColorCheckActivity extends AppCompatActivity
 
     }
 
+    public void invokeWSKCheckAdmin(RequestParams params) {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(ConstantVariables.ServiceConnectionString + "/game/startgame", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+                try {
+                    String str = new String(responseBody);
+                    JSONObject obj = new JSONObject(str);
+                    // When the JSON response has status boolean value assigned with true
+                    if (obj.getBoolean("status"))
+                    {
+                        Toast.makeText(getApplicationContext(), "Color has been set!", Toast.LENGTH_SHORT).show();
+                    }
+                    // Else display error message
+                    else {
+                        Toast.makeText(getApplicationContext(), obj.getString("error_msg"), Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+
+                // When Http response code is '404'
+                if (statusCode == 404) {
+                    Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code is '500'
+                else if (statusCode == 500) {
+                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code other than 404, 500
+                else {
+                    Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                }
+            }
+
+        });
+
+    }
+
     private void goToNextActivity()
     {
         if(isAdmin)
         {
+            RequestParams params = new RequestParams();
+            params.put("game_id", game_id);
+            invokeWSKCheckAdmin(params);
             finish();
             Intent i = new Intent(this, CurrentRoom.class);
             i.putExtra("currentRoom", currentRoomobject);
