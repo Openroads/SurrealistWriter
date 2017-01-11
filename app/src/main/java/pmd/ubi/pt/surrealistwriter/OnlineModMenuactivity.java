@@ -30,6 +30,8 @@ public class OnlineModMenuactivity extends AppCompatActivity
     {
         Intent i = new Intent(getApplicationContext(), OfflineGameSettings.class);
         startActivity(i);
+
+
     }
 
     public void rankingOnClick(View view)

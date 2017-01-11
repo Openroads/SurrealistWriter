@@ -26,6 +26,7 @@ import java.sql.Time;
 
 import cz.msebera.android.httpclient.HttpResponse;
 import pmd.ubi.pt.Utilities.ConstantVariables;
+import pmd.ubi.pt.objects.User;
 
 public class OnlineRoomPicker extends AppCompatActivity {
 
@@ -39,6 +40,8 @@ public class OnlineRoomPicker extends AppCompatActivity {
     private int [] currNumPlayers;
     private int numberOfRooms;
 
+    private User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +51,8 @@ public class OnlineRoomPicker extends AppCompatActivity {
 
 
         invokeWS(new RequestParams());
-
+        Intent i = getIntent();
+        user = (User)i.getSerializableExtra("user");
 
 
 
@@ -114,7 +118,7 @@ public class OnlineRoomPicker extends AppCompatActivity {
                             tvRoomName[i].setGravity(Gravity.CENTER);
                             Log.d("DEBUG", ""+roomNames[i]);
                             tvRoomName[i].setText(""+roomNames[i]);
-                            tvRoomName[i].setTextSize(25);
+                            tvRoomName[i].setTextSize(20);
                             tvRoomName[i].setTextColor(Color.BLACK);
                             lineLayout[i].addView(tvRoomName[i]);
 
@@ -122,7 +126,7 @@ public class OnlineRoomPicker extends AppCompatActivity {
                             tvRoomOccupation[i].setLayoutParams(params);
                             tvRoomOccupation[i].setGravity(Gravity.CENTER);
                             tvRoomOccupation[i].setText(""+currNumPlayers[i]+"/"+roomMax[i]);
-                            tvRoomOccupation[i].setTextSize(25);
+                            tvRoomOccupation[i].setTextSize(20);
                             tvRoomOccupation[i].setTextColor(Color.BLACK);
                             lineLayout[i].addView(tvRoomOccupation[i]);
 
@@ -142,6 +146,16 @@ public class OnlineRoomPicker extends AppCompatActivity {
                                 public void onClick(View view) {
                                     Toast.makeText(getApplicationContext(), "Room "+
                                             tvRoomName[view.getId()].getText().toString(),Toast.LENGTH_SHORT).show();
+
+                                    //Go to choose the color
+                                    finish();
+                                    Intent i = new Intent(getApplicationContext(), OnlineColorCheckActivity.class);
+                                    i.putExtra("user", user);
+                                    i.putExtra("game_id", view.getId());
+                                    i.putExtra("roomName", tvRoomName[view.getId()].getText().toString());
+                                    startActivity(i);
+
+
                                 }
                             });
                             linearLayout.addView(lineLayout[i]);

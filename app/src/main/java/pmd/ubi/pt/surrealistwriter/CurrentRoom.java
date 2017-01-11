@@ -179,7 +179,6 @@ public class CurrentRoom extends AppCompatActivity
     {
         RequestParams params = new RequestParams();
         params.put("game_id", currentRoomobject.getGameID());
-        params.put("status", 0);
         invokeWSK(params);
     }
 

@@ -14,11 +14,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="30dp"
+        android:textColor="#455257"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:text="Room Name"
+        android:id="@+id/roomName"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30dp"
         android:textColor="#ff0000"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="100dp"
         android:text="User email"
+        android:layout_below="@+id/roomName"
         android:id="@+id/userMail"/>
 
     <LinearLayout
@@ -27,7 +38,7 @@
         android:orientation="vertical"
         android:layout_below="@+id/userMail"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="100dp"
         android:layout_centerVertical="true"
         android:id="@+id/linearButton">
 
@@ -38,7 +49,7 @@
         android:layout_height="wrap_content"
         android:text="Get in!"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="80dp"
         android:layout_centerHorizontal="true"
         android:id="@+id/getInButton"
         android:onClick="getInOnClick"/>

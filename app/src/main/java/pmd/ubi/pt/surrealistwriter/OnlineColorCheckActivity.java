@@ -37,8 +37,10 @@ public class OnlineColorCheckActivity extends AppCompatActivity
     private int checkedColor = 0;
     private boolean isAdmin = false;
     TextView userMail;
+    TextView roomName;
+    private Integer gameId;
+    private String roomNameS;
 
-    Game game;
 
     private Button mButton;
 
@@ -49,16 +51,25 @@ public class OnlineColorCheckActivity extends AppCompatActivity
 
         Intent i = getIntent();
         currentRoomobject = (CurrentRoomobject) i.getSerializableExtra("currentRoom");
-        if(currentRoomobject != null && currentRoomobject.getAdminId() > 0)
-        {
-            isAdmin = true;
-        }
+
         user = (User) i.getSerializableExtra("user");
+        gameId = (Integer)(i.getSerializableExtra("game_id"));
         userMail = (TextView)findViewById(R.id.userMail);
         userMail.setText(user.getEmail());
         linearLayout = (LinearLayout)findViewById(R.id.linearButton);
+        roomName = (TextView)findViewById(R.id.roomName);
+        roomNameS = (String)i.getSerializableExtra("roomName");
 
-        game = (Game)i.getSerializableExtra("alejaja");
+        if(currentRoomobject != null && currentRoomobject.getAdminId() > 0)
+        {
+            isAdmin = true;
+            roomName.setText(currentRoomobject.getName());
+        }
+        else
+        {
+            roomName.setText(roomNameS);
+        }
+
         //ColorPicker
 
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -87,7 +98,16 @@ public class OnlineColorCheckActivity extends AppCompatActivity
                         btColor = ((ColorDrawable) btBackground).getColor();
                         //Checking if somebody has already choosen the same color
                         RequestParams params = new RequestParams();
-                        params.put("game_id", currentRoomobject.getGameID());
+                        if(currentRoomobject != null)
+                        {
+                            params.put("game_id", currentRoomobject.getGameID());
+                        }
+                        else
+                        {
+                            params.put("game_id", gameId);
+                        }
+
+
                         params.put("color", color);
 
                         invokeWS(params);
@@ -227,13 +247,25 @@ public class OnlineColorCheckActivity extends AppCompatActivity
 
     public void getInOnClick(View view)
     {
+        String game_Id = "";
+        String userId = "";
         if(isColorAvailable)
         {
-            String gameId = String.valueOf(currentRoomobject.getGameID());
-            String userId = String.valueOf(currentRoomobject.getAdminId());
+            if(currentRoomobject != null)
+            {
+                game_Id = String.valueOf(currentRoomobject.getGameID());
+                userId = String.valueOf(currentRoomobject.getAdminId());
+            }
+            else
+            {
+                game_Id = String.valueOf(gameId);
+                userId = String.valueOf(user.getId());
+            }
+
+
             String color = String.valueOf(checkedColor);
             RequestParams params = new RequestParams();
-            params.put("game_id", gameId);
+            params.put("game_id", game_Id);
             params.put("user_id", userId);
             params.put("color", color);
 
@@ -258,8 +290,9 @@ public class OnlineColorCheckActivity extends AppCompatActivity
         }
         else
         {
+            //finish();
             /*********** Here put the code to move to the activity when you join the room **********************/
-            Toast.makeText(getApplicationContext(), "You're not admin!", Toast.LENGTH_LONG);
+            Toast.makeText(getApplicationContext(), "You're not admin!", Toast.LENGTH_LONG).show();
         }
     }
 }

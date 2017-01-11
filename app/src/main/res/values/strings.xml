@@ -22,4 +22,5 @@
     <string name="reg_password">Password</string>
     <string name="reg_register_button">Register</string>
     <string name="error_incorrect_email">This email is incorrect </string>
+    <string name="title_activity_waiting">WaitingActivity</string>
 </resources>
