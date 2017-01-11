@@ -160,10 +160,10 @@ public class OnlineRoomPicker extends AppCompatActivity {
 
                                         Log.d("DEBUG", "" + ""+rid);
                                     }
-                                    finish();
+
                                     Intent i = new Intent(getApplicationContext(), OnlineColorCheckActivity.class);
                                     i.putExtra("user", user);
-                                    i.putExtra("game_id", String.valueOf(rid));
+                                    i.putExtra("game_id", rid);
                                     i.putExtra("roomName", tvRoomName[view.getId()].getText().toString());
                                     startActivity(i);
 

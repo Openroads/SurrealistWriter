@@ -113,7 +113,8 @@
             android:layout_marginTop="10dp"
             android:id="@+id/startGameButton"
             android:layout_weight="1.0"
-            android:text="Start Game"/>
+            android:text="Start Game"
+            android:onClick="startOnClick"/>
 
         <Button
             android:layout_width="wrap_content"

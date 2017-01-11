@@ -182,6 +182,13 @@ public class CurrentRoom extends AppCompatActivity
         invokeWSK(params);
     }
 
+    public void startOnClick(View view)
+    {
+        RequestParams param = new RequestParams();
+        param.put("game_id", String.valueOf(gameId));
+        invokeWSStartGame(param);
+    }
+
     /* REST SERVER */
     public void invokeWSK(RequestParams params) {
         AsyncHttpClient client = new AsyncHttpClient(); //room instead createroom
@@ -202,6 +209,54 @@ public class CurrentRoom extends AppCompatActivity
                         i.putExtra("user", user);
                         startActivity(i);
 
+                    }
+                    // Else display error message
+                    else {
+                        Toast.makeText(getApplicationContext(), obj.getString("error_msg"), Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+
+                // When Http response code is '404'
+                if (statusCode == 404) {
+                    Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code is '500'
+                else if (statusCode == 500) {
+                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code other than 404, 500
+                else {
+                    Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                }
+            }
+
+        });
+
+    }
+
+    public void invokeWSStartGame(RequestParams params) {
+        AsyncHttpClient client = new AsyncHttpClient(); //room instead createroom
+        client.get(ConstantVariables.ServiceConnectionString + "/game/startgame", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+                try {
+                    String str = new String(responseBody);
+                    JSONObject obj = new JSONObject(str);
+                    // When the JSON response has status boolean value assigned with true
+
+                    JSONObject objInfo = obj.getJSONObject("Info");
+
+                    if (objInfo.getBoolean("status"))
+                    {
+
+                        Toast.makeText(getApplicationContext(), "Game started", Toast.LENGTH_SHORT).show();
                     }
                     // Else display error message
                     else {

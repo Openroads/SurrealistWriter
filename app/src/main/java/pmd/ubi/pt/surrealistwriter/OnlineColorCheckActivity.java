@@ -54,7 +54,7 @@ public class OnlineColorCheckActivity extends AppCompatActivity
         currentRoomobject = (CurrentRoomobject) i.getSerializableExtra("currentRoom");
 
         user = (User) i.getSerializableExtra("user");
-        gameId = (Integer) (i.getSerializableExtra("game_id"));
+
         userMail = (TextView)findViewById(R.id.userMail);
         userMail.setText(user.getEmail());
         linearLayout = (LinearLayout)findViewById(R.id.linearButton);
@@ -68,6 +68,7 @@ public class OnlineColorCheckActivity extends AppCompatActivity
         }
         else
         {
+            gameId = (Integer)i.getSerializableExtra("game_id");
             roomName.setText(roomNameS);
         }
 
