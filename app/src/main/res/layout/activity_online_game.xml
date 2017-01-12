@@ -11,12 +11,83 @@
     tools:context="pmd.ubi.pt.surrealistwriter.OnlineGameActivity">
 
     <TextView
-        android:text="Game"
+        android:text="It's your turn!"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:id="@+id/tvComment"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:text="Round 1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/tvRound" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tvRound"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="125dp"
-        android:layout_marginStart="125dp"
-        android:id="@+id/textView" />
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:text="The quick..."
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines = "2"
+            android:scrollbars = "vertical"
+            android:layout_marginTop="35dp"
+            android:id="@+id/tvLastWords"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="30sp"
+            android:layout_below="@+id/tvComment"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:textAlignment="center" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvLastWords"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/etWord"
+                android:layout_weight="1"
+                android:hint="Insert Phrase"
+                android:textAlignment="center" />
+
+        </LinearLayout>
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvNumChars"
+            android:textSize="10sp"
+            android:textAlignment="textEnd"
+            tools:text="54/120" />
+
+        <Button
+            android:text="End Turn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/btEndTurn"
+            android:onClick="onClickEndTurn"/>
+
+    </LinearLayout>
 </RelativeLayout>
