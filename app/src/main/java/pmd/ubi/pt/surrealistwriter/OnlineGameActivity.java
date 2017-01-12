@@ -2,6 +2,8 @@ package pmd.ubi.pt.surrealistwriter;
 
 import android.content.Intent;
 import android.graphics.PorterDuff;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -32,6 +34,31 @@ import pmd.ubi.pt.Utilities.ConstantVariables;
 import pmd.ubi.pt.objects.User;
 
 public class OnlineGameActivity extends AppCompatActivity {
+
+
+    Handler handler = new Handler()
+    {
+        @Override
+        public void handleMessage(Message msg)
+        {
+            RequestParams param = new RequestParams();
+            param.put("game_id", String.valueOf(gameID));
+            param.put("user_id", String.valueOf(user.getId()));
+
+            invokeWS(param);
+
+
+        }
+    };
+
+
+
+
+    private boolean isMyTurn;
+    private User user;
+    private int gameID;
+    private int color;
+
 
     int iNumPlayers;
     int iNumRounds;
@@ -70,8 +97,11 @@ public class OnlineGameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_online_game);
 
         Intent i = getIntent();
-        User u = (User) i.getSerializableExtra("user");;
-        Log.d("DEBUG","ID AFTER : "+u.getId());
+        user = (User) i.getSerializableExtra("user");
+        gameID = (Integer)i.getSerializableExtra("game_id");
+        color = (Integer)i.getSerializableExtra("color");
+
+        Log.d("DEBUG","ID AFTER : "+user.getId());
 
         try {
             initialize();
@@ -252,6 +282,9 @@ public class OnlineGameActivity extends AppCompatActivity {
                 etWord.getBackground().setColorFilter(alColors.get(currentPlayer), PorterDuff.Mode.SRC_IN);
                 etWord.setTextColor(alColors.get(currentPlayer));
                 btEndTurn.setBackgroundColor(alColors.get(currentPlayer));
+
+
+                checkIfMyTurn();
             }
 
 
@@ -308,6 +341,35 @@ public class OnlineGameActivity extends AppCompatActivity {
         str.setSpan(new ForegroundColorSpan(color), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         currentSizeChars = finalText.getText().toString().length();
     }
+
+
+    private void checkIfMyTurn()
+    {
+        Thread thread = new Thread(new Runnable(){
+            @Override
+            public void run(){
+
+                while(!isMyTurn)
+                {
+                    handler.sendEmptyMessage(0);
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if(isMyTurn)
+                {
+
+                }
+
+
+            }
+        });
+        thread.start();
+    }
+
+
 }
 
 

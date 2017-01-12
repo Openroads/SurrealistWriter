@@ -28,6 +28,7 @@ import pmd.ubi.pt.objects.User;
 public class OnlineColorCheckActivity extends AppCompatActivity
 {
 
+    private boolean isMyTurn;
     private CurrentRoomobject currentRoomobject;
     private User user;
     private String color;
@@ -299,4 +300,8 @@ public class OnlineColorCheckActivity extends AppCompatActivity
             startActivity(i);
         }
     }
+
+
+
+
 }

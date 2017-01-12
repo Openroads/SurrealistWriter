@@ -111,55 +111,55 @@ public class WaitingActivity extends AppCompatActivity
     public void invokeWSCheckAdmin(RequestParams params) {
 
 
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.get(ConstantVariables.ServiceConnectionString + "/game/gamestatus", params, new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
-                try {
-                    String str = new String(responseBody);
-                    JSONObject obj = new JSONObject(str);
-                    // When the JSON response has status boolean value assigned with true
-                    if (obj.getBoolean("status")) {
-                        status = true;
+    AsyncHttpClient client = new AsyncHttpClient();
+    client.get(ConstantVariables.ServiceConnectionString + "/game/gamestatus", params, new AsyncHttpResponseHandler() {
+        @Override
+        public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+            try {
+                String str = new String(responseBody);
+                JSONObject obj = new JSONObject(str);
+                // When the JSON response has status boolean value assigned with true
+                if (obj.getBoolean("status")) {
+                    status = true;
 
-                    }
-                    // Else display error message
-                    else {
-                        //Toast.makeText(getApplicationContext(), "Don't worry, pleas wait...", Toast.LENGTH_SHORT).show();
-                    }
-                } catch (JSONException e) {
-
-
-                    Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
-                    e.printStackTrace();
-                    finish();
                 }
-            }
-
-            @Override
-            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
-
-                // When Http response code is '404'
-                if (statusCode == 404) {
-                    Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
-                    finish();
-                }
-                // When Http response code is '500'
-                else if (statusCode == 500) {
-                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
-                    finish();
-                }
-                // When Http response code other than 404, 500
+                // Else display error message
                 else {
-                    Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
-                    finish();
+                    //Toast.makeText(getApplicationContext(), "Don't worry, pleas wait...", Toast.LENGTH_SHORT).show();
                 }
+            } catch (JSONException e) {
 
+
+                Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+                finish();
+            }
+        }
+
+        @Override
+        public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+
+            // When Http response code is '404'
+            if (statusCode == 404) {
+                Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                finish();
+            }
+            // When Http response code is '500'
+            else if (statusCode == 500) {
+                Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                finish();
+            }
+            // When Http response code other than 404, 500
+            else {
+                Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                finish();
             }
 
-        });
+        }
 
-    }
+    });
+
+}
 
 }
 
