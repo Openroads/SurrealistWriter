@@ -28,6 +28,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Random;
 
+import cz.msebera.android.httpclient.Header;
 import pmd.ubi.pt.Utilities.ConstantVariables;
 import pmd.ubi.pt.objects.User;
 
@@ -126,7 +127,37 @@ public class OnlineGameActivity extends AppCompatActivity {
 
     }
 
-    public void invokeWS(RequestParams params) {
+    public void invokeWSForEndTurn(RequestParams params) {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(ConstantVariables.ServiceConnectionString + "/game/nextturn", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+                try {
+                    String str = new String(responseBody);
+                    JSONObject obj = new JSONObject(str);
+
+                    // When the JSON response has status boolean value assigned with true
+                    if (obj.getBoolean("status")) {
+
+                    }
+                    // Else display error message
+                    else {
+
+                    }
+                } catch (JSONException e) {
+                    Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+            });
+    }
+
+            public void invokeWS(RequestParams params) {
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(ConstantVariables.ServiceConnectionString + "/game/whonextturn", params, new AsyncHttpResponseHandler() {
             @Override
@@ -216,45 +247,19 @@ public class OnlineGameActivity extends AppCompatActivity {
     public void onClickEndTurn(View view){
 
         if(checkWordIsValid(etWord.getText().toString())) {
-            if(turn == 0)
-                setColor(tvLastWords,
-                        getLastTwoWords(etWord.getText().toString()) + "... ",
-                        getLastTwoWords(etWord.getText().toString()) + "... ",
-                        alColors.get(currentPlayer));
-            else
-                setColor(tvLastWords,
-                        getLastTwoWords(etWord.getText().toString()) + "... ",
-                        getLastTwoWords(etWord.getText().toString()) + "... ",
-                        alColors.get(currentPlayer));
-
-            // Updates the arrays that form the formatted data
-
-            etWord.setText(etWord.getText().toString() + " ");
-            allStrings[turn]  = etWord.getText().toString();
-            Log.d("DEBUG","Current size chars: "+currentSizeChars);
-            allStart[turn]   = currentSizeChars;
-            Log.d("DEBUG","String size: "+etWord.getText().toString().length());
-            allEnd[turn]     = etWord.getText().toString().length();
-            Log.d("DEBUG","Color Int: "+alColors.get(currentPlayer));
-            //Get total characters and sum it to the respective player
-            playerScoreSum[currentPlayer] += allEnd[turn]-1;
-            //Get color for each player
-            playerColor[currentPlayer] = alColors.get(currentPlayer);
-            allColors[turn]  = alColors.get(currentPlayer);
-            currentSizeChars+=etWord.getText().toString().length();
-
-            etWord.setText("");
+            RequestParams params = new RequestParams();
+            Intent i = getIntent();
+            User u = (User) i.getSerializableExtra("user");;
+            Log.d("DEBUG","TEST ID: "+u.getId());
+            params.add("user_id",String.valueOf(u.getId()));
+            params.add("game_id",String.valueOf(getIntent().getExtras().getInt("game_id")));
+            params.put("color",  String.valueOf(getIntent().getExtras().getInt("color")));
+            params.put("words",etWord.getText().toString());
+            invokeWSForEndTurn(params);
 
 
-            }
-
-                tvRound.setText("Round " + round);
-                etWord.getBackground().setColorFilter(alColors.get(currentPlayer), PorterDuff.Mode.SRC_IN);
-                etWord.setTextColor(alColors.get(currentPlayer));
-                btEndTurn.setBackgroundColor(alColors.get(currentPlayer));
-            }
-
-
+        }
+    }
 
 
 

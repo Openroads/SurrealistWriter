@@ -379,6 +379,9 @@ public class OnlineColorCheckActivity extends AppCompatActivity
             invokeWSKCheckAdmin(params);
             finish();
             Intent i = new Intent(this, CurrentRoom.class);
+            i.putExtra("game_id",game_id);
+            i.putExtra("user",user);
+            i.putExtra("color",checkedColor);
             i.putExtra("currentRoom", currentRoomobject);
             startActivity(i);
         }
