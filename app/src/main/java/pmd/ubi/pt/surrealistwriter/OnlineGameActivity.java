@@ -150,9 +150,15 @@ public class OnlineGameActivity extends AppCompatActivity {
         Intent i = getIntent();
         User u = (User) i.getSerializableExtra("user");;
         Log.d("DEBUG","TEST ID: "+u.getId());
+
+        checkIfMyTurn();
+
+        /*
         params.add("user_id",String.valueOf(u.getId()));
         params.add("game_id",String.valueOf(getIntent().getExtras().getInt("game_id")));
         invokeWS(params);
+
+        */
 
     }
 
