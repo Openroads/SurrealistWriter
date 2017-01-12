@@ -191,7 +191,7 @@ public class CurrentRoom extends AppCompatActivity
         RequestParams param = new RequestParams();
         param.put("game_id", String.valueOf(gameId));
         invokeWSStartGame(param);
-        Intent i = new Intent(getApplicationContext(), OnlineModMenuactivity.class);
+        Intent i = new Intent(getApplicationContext(), OnlineGameActivity.class);
         i.putExtra("game_id", getIntent().getExtras().getInt("game_id"));
         i.putExtra("user", user);
         i.putExtra("color", getIntent().getExtras().getInt("color"));
