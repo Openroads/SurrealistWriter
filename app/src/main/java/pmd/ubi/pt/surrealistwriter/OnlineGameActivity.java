@@ -1,7 +1,6 @@
 package pmd.ubi.pt.surrealistwriter;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,14 +13,11 @@ import android.text.method.ScrollingMovementMethod;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -29,9 +25,7 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import pmd.ubi.pt.Utilities.ConstantVariables;
@@ -73,8 +67,11 @@ public class OnlineGameActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game_play);
+        setContentView(R.layout.activity_online_game);
 
+        Intent i = getIntent();
+        User u = (User) i.getSerializableExtra("user");;
+        Log.d("DEBUG","ID AFTER : "+u.getId());
 
         try {
             initialize();
@@ -82,17 +79,15 @@ public class OnlineGameActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        tvComment   = (TextView) findViewById(R.id.tvComment);
-        tvLastWords = (TextView) findViewById(R.id.tvLastWords);
+        tvComment   = (TextView) findViewById(R.id.tvComment2);
+        tvLastWords = (TextView) findViewById(R.id.tvLastWords2);
         tvRound = (TextView) findViewById(R.id.tvRound);
-        tvNumChars  = (TextView) findViewById(R.id.tvNumChars);
-        etWord      = (EditText) findViewById(R.id.etWord);
-        btEndTurn   = (Button)   findViewById(R.id.btEndTurn);
+        tvNumChars  = (TextView) findViewById(R.id.tvNumChars2);
+        etWord      = (EditText) findViewById(R.id.etWord2);
+        btEndTurn   = (Button)   findViewById(R.id.btEndTurn2);
 
 
-        tvNumChars.setText("0/"+iNumCharacters);
-        tvLastWords.setMovementMethod(new ScrollingMovementMethod());
-        tvLastWords.setText(last2Words[0]+last2Words[1]);
+
 
         etWord.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         etWord.setFilters(new InputFilter[] {new InputFilter.LengthFilter(iNumCharacters)});
@@ -123,8 +118,10 @@ public class OnlineGameActivity extends AppCompatActivity {
     public void initialize() throws JSONException {
 
         RequestParams params = new RequestParams();
-        User user1 = (User) getIntent().getExtras().getSerializable("user");
-        params.add("user_id",String.valueOf(user1.getId()));
+        Intent i = getIntent();
+        User u = (User) i.getSerializableExtra("user");;
+        Log.d("DEBUG","TEST ID: "+u.getId());
+        params.add("user_id",String.valueOf(u.getId()));
         params.add("game_id",String.valueOf(getIntent().getExtras().getInt("game_id")));
         invokeWS(params);
 
@@ -146,16 +143,21 @@ public class OnlineGameActivity extends AppCompatActivity {
                         iNumRounds = infoObject.getInt("max_round");
                         iNumCharacters = infoObject.getInt("max_characters");
                         String s = infoObject.getString("last_words");
-                        if(s.length()==0) {
+                        Log.d("DEBUG","STRING "+s);
+                        if(s.length()==0 || s == null) {
                             last2Words[0] = "";
                             last2Words[1] = "";
                         }
                         else
                             last2Words = s.split(" ");
                         prevColor = infoObject.getInt("color");
+                        tvNumChars.setText("0/"+iNumCharacters);
+                        tvLastWords.setMovementMethod(new ScrollingMovementMethod());
+                        tvLastWords.setText(last2Words[0]+last2Words[1]);
                     }
                     // Else display error message
                     else {
+                        Log.d("DEBUG","DIDNT ENTER STATUS");
                         Toast.makeText(getApplicationContext(), "Color is  not available!", Toast.LENGTH_SHORT).show();
                         Toast.makeText(getApplicationContext(), obj.getString("error_msg"), Toast.LENGTH_LONG).show();
                     }

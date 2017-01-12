@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:id="@+id/tvComment"
+        android:id="@+id/tvComment2"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
@@ -26,7 +26,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:id="@+id/tvRound" />
+        android:id="@+id/tvRound2" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -43,10 +43,10 @@
             android:maxLines = "2"
             android:scrollbars = "vertical"
             android:layout_marginTop="35dp"
-            android:id="@+id/tvLastWords"
+            android:id="@+id/tvLastWords2"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="30sp"
-            android:layout_below="@+id/tvComment"
+            android:layout_below="@+id/tvComment2"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentLeft="true"
@@ -57,7 +57,7 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvLastWords"
+            android:layout_below="@+id/tvLastWords2"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true">
 
@@ -66,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
                 android:ems="10"
-                android:id="@+id/etWord"
+                android:id="@+id/etWord2"
                 android:layout_weight="1"
                 android:hint="Insert Phrase"
                 android:textAlignment="center" />
@@ -77,7 +77,7 @@
             android:text="TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/tvNumChars"
+            android:id="@+id/tvNumChars2"
             android:textSize="10sp"
             android:textAlignment="textEnd"
             tools:text="54/120" />
@@ -86,7 +86,7 @@
             android:text="End Turn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/btEndTurn"
+            android:id="@+id/btEndTurn2"
             android:onClick="onClickEndTurn"/>
 
     </LinearLayout>

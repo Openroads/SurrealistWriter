@@ -290,8 +290,6 @@ public class OnlineColorCheckActivity extends AppCompatActivity
                     // When the JSON response has status boolean value assigned with true
                     if (obj.getBoolean("status"))
                     {
-                        Intent i = new Intent(getApplicationContext(),OnlineGameActivity.class);
-                        startActivity(i);
 
 
                     }
