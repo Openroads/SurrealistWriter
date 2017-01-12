@@ -284,6 +284,9 @@ public class OnlineColorCheckActivity extends AppCompatActivity
             params.put("game_id", game_id);
             finish();
             Intent i = new Intent(this, CurrentRoom.class);
+            i.putExtra("game_id",game_id);
+            i.putExtra("user",user);
+            i.putExtra("color",checkedColor);
             i.putExtra("currentRoom", currentRoomobject);
             startActivity(i);
         }
