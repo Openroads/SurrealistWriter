@@ -150,7 +150,7 @@ public class OnlineColorCheckActivity extends AppCompatActivity
                         //Get Responde from Server if color is available
                         isColorAvailable = true;
 
-                        Toast.makeText(getApplicationContext(), "Color is available!", Toast.LENGTH_SHORT).show();
+
                         //Tutaj zmienilem
 
 
@@ -202,7 +202,7 @@ public class OnlineColorCheckActivity extends AppCompatActivity
                     // When the JSON response has status boolean value assigned with true
                     if (obj.getBoolean("status"))
                     {
-                        Toast.makeText(getApplicationContext(), "Color has been set!", Toast.LENGTH_SHORT).show();
+
                         //goToNextActivity();
 
                     }
@@ -264,9 +264,7 @@ public class OnlineColorCheckActivity extends AppCompatActivity
             params.put("color", color);
 
             invokeWSK(params);
-            RequestParams params2 = new RequestParams();
-            params2.put("game_id", game_Id);
-            invokeWSCheckAdmin(params2);
+
             //Waiting for flag
             goToNextActivity();
         }
@@ -277,106 +275,12 @@ public class OnlineColorCheckActivity extends AppCompatActivity
 
     }
 
-
-
-    public void invokeWSCheckAdmin(RequestParams params) {
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.get(ConstantVariables.ServiceConnectionString + "/game/gamestatus", params, new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
-                try {
-                    String str = new String(responseBody);
-                    JSONObject obj = new JSONObject(str);
-                    // When the JSON response has status boolean value assigned with true
-                    if (obj.getBoolean("status"))
-                    {
-
-
-                    }
-                    // Else display error message
-                    else {
-                        Toast.makeText(getApplicationContext(), "Game has yet to start!", Toast.LENGTH_SHORT).show();
-                    }
-                } catch (JSONException e) {
-                    isColorAvailable = false;
-                    Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
-
-                isColorAvailable = false;
-                // When Http response code is '404'
-                if (statusCode == 404) {
-                    Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
-                }
-                // When Http response code is '500'
-                else if (statusCode == 500) {
-                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
-                }
-                // When Http response code other than 404, 500
-                else {
-                    Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
-                }
-            }
-
-        });
-
-    }
-
-    public void invokeWSKCheckAdmin(RequestParams params) {
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.get(ConstantVariables.ServiceConnectionString + "/game/startgame", params, new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
-                try {
-                    String str = new String(responseBody);
-                    JSONObject obj = new JSONObject(str);
-                    // When the JSON response has status boolean value assigned with true
-                    if (obj.getBoolean("status"))
-                    {
-                        Toast.makeText(getApplicationContext(), "Color has been set!", Toast.LENGTH_SHORT).show();
-                    }
-                    // Else display error message
-                    else {
-                        Toast.makeText(getApplicationContext(), obj.getString("error_msg"), Toast.LENGTH_LONG).show();
-                    }
-                } catch (JSONException e) {
-                    Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
-
-                // When Http response code is '404'
-                if (statusCode == 404) {
-                    Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
-                }
-                // When Http response code is '500'
-                else if (statusCode == 500) {
-                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
-                }
-                // When Http response code other than 404, 500
-                else {
-                    Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
-                }
-            }
-
-        });
-
-    }
-
     private void goToNextActivity()
     {
         if(isAdmin)
         {
             RequestParams params = new RequestParams();
             params.put("game_id", game_id);
-            invokeWSKCheckAdmin(params);
             finish();
             Intent i = new Intent(this, CurrentRoom.class);
             i.putExtra("game_id",game_id);
@@ -391,7 +295,6 @@ public class OnlineColorCheckActivity extends AppCompatActivity
             //finish();
 
             /*********** Here put the code to move to the activity when you join the room **********************/
-            Toast.makeText(getApplicationContext(), "Waiting for Admin to join", Toast.LENGTH_LONG).show();
             Intent i = new Intent(getApplicationContext(), WaitingActivity.class);
             i.putExtra("game_id", game_id);
             i.putExtra("user", user);

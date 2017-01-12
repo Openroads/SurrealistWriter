@@ -180,6 +180,10 @@ public class CurrentRoom extends AppCompatActivity
         RequestParams params = new RequestParams();
         params.put("game_id", currentRoomobject.getGameID());
         invokeWSK(params);
+        finish();
+        Intent i = new Intent(getApplicationContext(), OnlineModMenuactivity.class);
+        i.putExtra("user", user);
+        startActivity(i);
     }
 
     public void startOnClick(View view)
@@ -210,9 +214,7 @@ public class CurrentRoom extends AppCompatActivity
 
 
                         Toast.makeText(getApplication(), "Room has been desactivated!", Toast.LENGTH_SHORT).show();
-                        Intent i = new Intent(getApplicationContext(), OnlineModMenuactivity.class);
-                        i.putExtra("user", user);
-                        startActivity(i);
+
 
                     }
                     // Else display error message
