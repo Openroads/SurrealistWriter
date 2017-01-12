@@ -169,6 +169,7 @@ public class OnlineGameActivity extends AppCompatActivity {
                     // When the JSON response has status boolean value assigned with true
                     if (obj.getBoolean("status"))
                     {
+                        Log.d("DEBUG","ENTERED STATUS");
                         infoObject = obj;
                         iNumRounds = infoObject.getInt("max_round");
                         iNumCharacters = infoObject.getInt("max_characters");
