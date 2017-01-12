@@ -124,7 +124,7 @@ public class OnlineGameActivity extends AppCompatActivity {
 
         RequestParams params = new RequestParams();
         User user1 = (User) getIntent().getExtras().getSerializable("user");
-        params.add("user_id",user1.getId());
+        params.add("user_id",String.valueOf(user1.getId()));
         params.add("game_id",String.valueOf(getIntent().getExtras().getInt("game_id")));
         invokeWS(params);
 
