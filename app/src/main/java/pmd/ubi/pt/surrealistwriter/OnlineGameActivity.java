@@ -191,6 +191,7 @@ public class OnlineGameActivity extends AppCompatActivity {
                         tvNumChars.setText("0/"+iNumCharacters);
                         tvLastWords.setMovementMethod(new ScrollingMovementMethod());
                         tvLastWords.setText(last2Words[0]+last2Words[1]);
+                        Log.d("DEBUG","Last: "+last2Words[0]+" "+last2Words[1]);
                         etWord.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
                         etWord.setFilters(new InputFilter[] {new InputFilter.LengthFilter(iNumCharacters)});
 

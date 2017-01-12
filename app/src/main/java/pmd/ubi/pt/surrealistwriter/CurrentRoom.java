@@ -213,7 +213,6 @@ public class CurrentRoom extends AppCompatActivity
                     {
 
 
-                        Toast.makeText(getApplication(), "Room has been desactivated!", Toast.LENGTH_SHORT).show();
 
 
                     }
