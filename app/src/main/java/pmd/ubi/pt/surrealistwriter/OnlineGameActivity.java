@@ -68,6 +68,7 @@ public class OnlineGameActivity extends AppCompatActivity {
     int[] playerColor;
     JSONObject infoObject;
     String[] last2Words;
+    int prevColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,9 +123,10 @@ public class OnlineGameActivity extends AppCompatActivity {
     public void initialize() throws JSONException {
 
         RequestParams params = new RequestParams();
-        params.add("user_id",user_id);
-        params.add("game_id",game_id);
-        invokeWS();
+        User user1 = (User) getIntent().getExtras().getSerializable("user");
+        params.add("user_id",user1.getId());
+        params.add("game_id",String.valueOf(getIntent().getExtras().getInt("game_id")));
+        invokeWS(params);
 
     }
 
@@ -143,7 +145,14 @@ public class OnlineGameActivity extends AppCompatActivity {
                         infoObject = obj;
                         iNumRounds = infoObject.getInt("max_round");
                         iNumCharacters = infoObject.getInt("max_characters");
-                        last2Words = infoObject.getString("last_words").split(" ");
+                        String s = infoObject.getString("last_words");
+                        if(s.length()==0) {
+                            last2Words[0] = "";
+                            last2Words[1] = "";
+                        }
+                        else
+                            last2Words = s.split(" ");
+                        prevColor = infoObject.getInt("color");
                     }
                     // Else display error message
                     else {
@@ -230,7 +239,7 @@ public class OnlineGameActivity extends AppCompatActivity {
                 etWord.setTextColor(alColors.get(currentPlayer));
                 btEndTurn.setBackgroundColor(alColors.get(currentPlayer));
             }
-        }
+
 
 
 
