@@ -264,6 +264,9 @@ public class OnlineColorCheckActivity extends AppCompatActivity
             params.put("color", color);
 
             invokeWSK(params);
+            RequestParams params2 = new RequestParams();
+            params2.put("game_id", game_Id);
+            invokeWSCheckAdmin(params2);
             //Waiting for flag
             goToNextActivity();
         }
@@ -273,6 +276,8 @@ public class OnlineColorCheckActivity extends AppCompatActivity
         }
 
     }
+
+
 
     public void invokeWSCheckAdmin(RequestParams params) {
         AsyncHttpClient client = new AsyncHttpClient();
