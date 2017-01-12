@@ -108,7 +108,7 @@ public class OnlineGameActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+        
         tvComment   = (TextView) findViewById(R.id.tvComment2);
         tvLastWords = (TextView) findViewById(R.id.tvLastWords2);
         tvRound     = (TextView) findViewById(R.id.tvRound2);
@@ -145,8 +145,6 @@ public class OnlineGameActivity extends AppCompatActivity {
     }
 
     public void initialize() throws JSONException {
-
-        RequestParams params = new RequestParams();
         Intent i = getIntent();
         User u = (User) i.getSerializableExtra("user");;
         Log.d("DEBUG","TEST ID: "+u.getId());
@@ -260,8 +258,8 @@ public class OnlineGameActivity extends AppCompatActivity {
             User u = (User) i.getSerializableExtra("user");;
             Log.d("DEBUG","TEST ID: "+u.getId());
             params.add("user_id",String.valueOf(u.getId()));
-            params.add("game_id",String.valueOf(getIntent().getExtras().getInt("game_id")));
-            params.put("color",  String.valueOf(getIntent().getExtras().getInt("color")));
+            params.add("game_id", String.valueOf(gameID));
+            params.put("color",  String.valueOf(color));
             params.put("words",etWord.getText().toString());
             invokeWSForEndTurn(params);
 
@@ -345,10 +343,7 @@ public class OnlineGameActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
-                if(isMyTurn)
-                {
 
-                }
 
 
             }
