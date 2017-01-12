@@ -44,7 +44,8 @@
         <activity android:name=".OfflineModeMenuActivity" />
         <activity android:name=".OnlineColorCheckActivity" />
         <activity android:name=".OnlineRoomPicker" />
-        <activity android:name=".OnlineGameActivity"></activity>
+        <activity android:name=".OnlineGameActivity" />
+        <activity android:name=".WaitingActivity"></activity>
     </application>
 
 </manifest>

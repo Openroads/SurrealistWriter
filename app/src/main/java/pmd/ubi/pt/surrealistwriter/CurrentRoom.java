@@ -248,10 +248,10 @@ public class CurrentRoom extends AppCompatActivity
             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
                 try {
                     String str = new String(responseBody);
-                    JSONObject obj = new JSONObject(str);
+                    JSONObject objInfo = new JSONObject(str);
                     // When the JSON response has status boolean value assigned with true
 
-                    JSONObject objInfo = obj.getJSONObject("Info");
+
 
                     if (objInfo.getBoolean("status"))
                     {
@@ -260,7 +260,7 @@ public class CurrentRoom extends AppCompatActivity
                     }
                     // Else display error message
                     else {
-                        Toast.makeText(getApplicationContext(), obj.getString("error_msg"), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), objInfo.getString("error_msg"), Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();

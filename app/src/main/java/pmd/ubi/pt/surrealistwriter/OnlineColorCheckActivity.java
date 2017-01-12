@@ -386,6 +386,11 @@ public class OnlineColorCheckActivity extends AppCompatActivity
 
             /*********** Here put the code to move to the activity when you join the room **********************/
             Toast.makeText(getApplicationContext(), "Waiting for Admin to join", Toast.LENGTH_LONG).show();
+            Intent i = new Intent(getApplicationContext(), WaitingActivity.class);
+            i.putExtra("game_id", game_id);
+            i.putExtra("user", user);
+            i.putExtra("color", checkedColor);
+            startActivity(i);
         }
     }
 }
