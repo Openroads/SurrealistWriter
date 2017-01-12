@@ -81,7 +81,7 @@ public class OnlineGameActivity extends AppCompatActivity {
 
         tvComment   = (TextView) findViewById(R.id.tvComment2);
         tvLastWords = (TextView) findViewById(R.id.tvLastWords2);
-        tvRound = (TextView) findViewById(R.id.tvRound);
+        tvRound     = (TextView) findViewById(R.id.tvRound2);
         tvNumChars  = (TextView) findViewById(R.id.tvNumChars2);
         etWord      = (EditText) findViewById(R.id.etWord2);
         btEndTurn   = (Button)   findViewById(R.id.btEndTurn2);
@@ -89,8 +89,7 @@ public class OnlineGameActivity extends AppCompatActivity {
 
 
 
-        etWord.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-        etWord.setFilters(new InputFilter[] {new InputFilter.LengthFilter(iNumCharacters)});
+
 
         etWord.addTextChangedListener(new TextWatcher() {
             @Override
@@ -154,12 +153,25 @@ public class OnlineGameActivity extends AppCompatActivity {
                         tvNumChars.setText("0/"+iNumCharacters);
                         tvLastWords.setMovementMethod(new ScrollingMovementMethod());
                         tvLastWords.setText(last2Words[0]+last2Words[1]);
+                        etWord.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+                        etWord.setFilters(new InputFilter[] {new InputFilter.LengthFilter(iNumCharacters)});
+
+                        tvLastWords.setVisibility(View.VISIBLE);
+                        etWord.setVisibility(View.VISIBLE);
+                        btEndTurn.setVisibility(View.VISIBLE);
+                        tvNumChars.setVisibility(View.VISIBLE);
+                        tvRound.setVisibility(View.VISIBLE);
                     }
                     // Else display error message
                     else {
                         Log.d("DEBUG","DIDNT ENTER STATUS");
-                        Toast.makeText(getApplicationContext(), "Color is  not available!", Toast.LENGTH_SHORT).show();
-                        Toast.makeText(getApplicationContext(), obj.getString("error_msg"), Toast.LENGTH_LONG).show();
+                        tvComment.setText("Please wait for your turn");
+                        tvLastWords.setVisibility(View.INVISIBLE);
+                        etWord.setVisibility(View.INVISIBLE);
+                        btEndTurn.setVisibility(View.INVISIBLE);
+                        tvNumChars.setVisibility(View.INVISIBLE);
+                        tvRound.setVisibility(View.INVISIBLE);
+
                     }
                 } catch (JSONException e) {
                     Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
