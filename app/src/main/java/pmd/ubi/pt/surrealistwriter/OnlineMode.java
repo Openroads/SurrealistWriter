@@ -21,13 +21,13 @@ public class OnlineMode extends AppCompatActivity
     }
 
     public void createRoomOC(View view) {
-        Intent crIntent = new Intent(this,CreateRoom.class);
+        Intent crIntent = new Intent(getApplicationContext(),CreateRoom.class);
         crIntent.putExtra("user", user);
         startActivity(crIntent);
     }
 
     public void joinRoomOC(View view) {
-        Intent jIntent = new Intent(this,OnlineRoomPicker.class);
+        Intent jIntent = new Intent(getApplicationContext(),OnlineRoomPicker.class);
         jIntent.putExtra("user", user);
         startActivity(jIntent);
     }
